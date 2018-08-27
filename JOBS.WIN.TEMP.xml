@@ -14,10 +14,11 @@
          <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
          <max_parallel_action>1</max_parallel_action>
          <mrt_time>000000</mrt_time>
-         <name>JOBS.WIN.NEW.5</name>
+         <name>JOBS.WIN.TEMP</name>
          <type>JOBS</type>
          <inherit_output_filter>N</inherit_output_filter>
          <queue>CLIENT_QUEUE</queue>
+         <description>Test Title</description>
          <versioning_id>-1591933506</versioning_id>
       </row>
    </general_attributes>
@@ -27,13 +28,14 @@
 !
 ! @set retcode=%errorlevel%
 ! @if NOT %ERRORLEVEL% == 0 goto :retcode
-]]></process>
+dir c:\temp]]></process>
       </row>
    </scripts>
    <job_attributes>
       <row>
          <platform>WINDOWS</platform>
-         <agent><![CDATA[<WIN>]]></agent>
+         <agent>WIN01</agent>
+         <login>LOGIN.WIN01</login>
          <job_report_path>2</job_report_path>
          <win_work_dir>c:\</win_work_dir>
          <win_typ>0</win_typ>
@@ -45,4 +47,8 @@
          <win_cmd></win_cmd>
       </row>
    </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
 </jobs>
