@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vara>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.CUSTOMTYPE_REGISTRY</name>
+         <type>VARA</type>
+         <sub_type>STATIC</sub_type>
+         <versioning_id>1843257198</versioning_id>
+      </row>
+   </general_attributes>
+   <variable_definitions>
+      <row>
+         <column_count>5</column_count>
+         <on_not_found>I</on_not_found>
+         <sort_order>0</sort_order>
+         <type>STATIC</type>
+         <data_type>C</data_type>
+         <validity_range>FREI</validity_range>
+      </row>
+   </variable_definitions>
+   <static_values>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"ACTIVITY#GENERIC","main_type":"ACTIVITY","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ACTIVITY#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"APPLICATION#GENERIC","main_type":"APPLICATION","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>APPLICATION#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_FTP</value2>
+         <value3>1.2.1</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_FTP.PRV.CUSTOM_TYPES","resource":"ARTIFACTSOURCE#FTP","main_type":"ARTIFACTSOURCE","custom_type":"FTP","timestamp":"02018-08-22 12:12:00"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ARTIFACTSOURCE#FTP</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_HTTP</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_HTTP.PRV.CUSTOM_TYPES","resource":"ARTIFACTSOURCE#HTTP","main_type":"ARTIFACTSOURCE","custom_type":"HTTP","timestamp":"02018-08-22 12:12:19"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ARTIFACTSOURCE#HTTP</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_SCP</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_SCP.PRV.CUSTOM_TYPES","resource":"ARTIFACTSOURCE#SCP","main_type":"ARTIFACTSOURCE","custom_type":"SCP","timestamp":"02018-08-22 12:17:29"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ARTIFACTSOURCE#SCP</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_SMB</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_SMB.PRV.CUSTOM_TYPES","resource":"ARTIFACTSOURCE#SMB","main_type":"ARTIFACTSOURCE","custom_type":"SMB","timestamp":"02018-08-22 12:18:01"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ARTIFACTSOURCE#SMB</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.1.0</value1>
+         <value2>PCK.AUTOMIC_JDBC</value2>
+         <value3>1.3.0</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_JDBC.PRV.CUSTOM_TYPES","resource":"COMPONENT#DATABASE_JDBC#2","main_type":"COMPONENT","custom_type":"DATABASE_JDBC","timestamp":"02018-08-22 12:06:18"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#DATABASE_JDBC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>6.0</value1>
+         <value2>PCK.AUTOMIC_MSSQL</value2>
+         <value3>1.0.3</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_MSSQL.PRV.CUSTOM_TYPES","resource":"COMPONENT#DATABASE_MSSQL#2","main_type":"COMPONENT","custom_type":"DATABASE_MSSQL","timestamp":"02018-08-22 12:13:53"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#DATABASE_MSSQL</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_ORACLE_DB</value2>
+         <value3>1.0.2</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_ORACLE_DB.PRV.CUSTOM_TYPES","resource":"COMPONENT#DATABASE_ORACLE#2","main_type":"COMPONENT","custom_type":"DATABASE_ORACLE","timestamp":"02018-08-22 12:14:28"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#DATABASE_ORACLE</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.1.0</value1>
+         <value2>PCK.AUTOMIC_FILESYSTEM</value2>
+         <value3>1.2.7</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_FILESYSTEM.PRV.CUSTOM_TYPES","resource":"COMPONENT#FILEBASED#2","main_type":"COMPONENT","custom_type":"FILEBASED","timestamp":"02018-08-22 12:11:40"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#FILEBASED</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"COMPONENT#GENERIC#2","main_type":"COMPONENT","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_RM</value2>
+         <value3>1.0.0</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_RM.PRV.CUSTOM_TYPES","resource":"COMPONENT#RMREST#2","main_type":"COMPONENT","custom_type":"RMREST","timestamp":"02018-08-22 12:16:36"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#RMREST</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_TOMCAT</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":2,"object":"PCK.AUTOMIC_TOMCAT.PRV.CUSTOM_TYPES","resource":"COMPONENT#TOMCAT#2","main_type":"COMPONENT","custom_type":"TOMCAT","timestamp":"02018-08-22 12:05:25"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>COMPONENT#TOMCAT</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_JDBC</value2>
+         <value3>1.3.0</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_JDBC.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#DATABASE_JDBC#1","main_type":"DEPLOYMENTTARGET","custom_type":"DATABASE_JDBC","timestamp":"02018-08-22 12:06:18"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#DATABASE_JDBC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>6.0</value1>
+         <value2>PCK.AUTOMIC_MSSQL</value2>
+         <value3>1.0.3</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_MSSQL.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#DATABASE_MSSQL#1","main_type":"DEPLOYMENTTARGET","custom_type":"DATABASE_MSSQL","timestamp":"02018-08-22 12:13:53"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#DATABASE_MSSQL</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_ORACLE_DB</value2>
+         <value3>1.0.2</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_ORACLE_DB.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#DATABASE_ORACLE#1","main_type":"DEPLOYMENTTARGET","custom_type":"DATABASE_ORACLE","timestamp":"02018-08-22 12:14:28"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#DATABASE_ORACLE</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.1.0</value1>
+         <value2>PCK.AUTOMIC_FILESYSTEM</value2>
+         <value3>1.2.7</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_FILESYSTEM.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#FILEBASED#1","main_type":"DEPLOYMENTTARGET","custom_type":"FILEBASED","timestamp":"02018-08-22 12:11:40"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#FILEBASED</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#GENERIC#1","main_type":"DEPLOYMENTTARGET","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_RM</value2>
+         <value3>1.0.0</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_RM.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#RMREST#1","main_type":"DEPLOYMENTTARGET","custom_type":"RMREST","timestamp":"02018-08-22 12:16:36"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#RMREST</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_TOMCAT</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":1,"object":"PCK.AUTOMIC_TOMCAT.PRV.CUSTOM_TYPES","resource":"DEPLOYMENTTARGET#TOMCAT#1","main_type":"DEPLOYMENTTARGET","custom_type":"TOMCAT","timestamp":"02018-08-22 12:05:25"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>DEPLOYMENTTARGET#TOMCAT</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"ENVIRONMENT#AUTOMIC","main_type":"ENVIRONMENT","custom_type":"AUTOMIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ENVIRONMENT#AUTOMIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"ENVIRONMENT#GENERIC","main_type":"ENVIRONMENT","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ENVIRONMENT#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"ENVIRONMENT#NON_PRODUCTION","main_type":"ENVIRONMENT","custom_type":"NON_PRODUCTION","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ENVIRONMENT#NON_PRODUCTION</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"ENVIRONMENT#PRODUCTION","main_type":"ENVIRONMENT","custom_type":"PRODUCTION","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>ENVIRONMENT#PRODUCTION</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"PACKAGE#DEPLOYMENT","main_type":"PACKAGE","custom_type":"DEPLOYMENT","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>PACKAGE#DEPLOYMENT</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"PACKAGE#GENERIC","main_type":"PACKAGE","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>PACKAGE#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"PACKAGEDEPENDENCY#GENERIC","main_type":"PACKAGEDEPENDENCY","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>PACKAGEDEPENDENCY#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RELEASE#GENERIC","main_type":"RELEASE","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RELEASE#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RELEASE#HOTFIX","main_type":"RELEASE","custom_type":"HOTFIX","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RELEASE#HOTFIX</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RELEASE#MAJOR","main_type":"RELEASE","custom_type":"MAJOR","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RELEASE#MAJOR</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RELEASE#MINOR","main_type":"RELEASE","custom_type":"MINOR","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RELEASE#MINOR</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RESERVATION#GENERIC","main_type":"RESERVATION","custom_type":"GENERIC","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RESERVATION#GENERIC</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RESERVATION#MAINTENANCE","main_type":"RESERVATION","custom_type":"MAINTENANCE","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RESERVATION#MAINTENANCE</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"RESERVATION#RELEASE","main_type":"RESERVATION","custom_type":"RELEASE","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>RESERVATION#RELEASE</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"WORKFLOW#GENERAL","main_type":"WORKFLOW","custom_type":"GENERAL","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>WORKFLOW#GENERAL</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"WORKFLOW#INSTALL","main_type":"WORKFLOW","custom_type":"INSTALL","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>WORKFLOW#INSTALL</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"WORKFLOW#PROVISIONING","main_type":"WORKFLOW","custom_type":"PROVISIONING","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>WORKFLOW#PROVISIONING</key>
+      </row>
+      <row>
+         <client>100</client>
+         <value1>1.0.0</value1>
+         <value2>PCK.AUTOMIC_BOND</value2>
+         <value3>1.2.0</value3>
+         <value4>{"order":0,"object":"PCK.AUTOMIC_BOND.PRV.CUSTOM_TYPES","resource":"WORKFLOW#UNINSTALL","main_type":"WORKFLOW","custom_type":"UNINSTALL","timestamp":"02018-06-29 13:48:44"}</value4>
+         <value5>Activated</value5>
+         <validity_range>FREI</validity_range>
+         <key>WORKFLOW#UNINSTALL</key>
+      </row>
+   </static_values>
+</vara>

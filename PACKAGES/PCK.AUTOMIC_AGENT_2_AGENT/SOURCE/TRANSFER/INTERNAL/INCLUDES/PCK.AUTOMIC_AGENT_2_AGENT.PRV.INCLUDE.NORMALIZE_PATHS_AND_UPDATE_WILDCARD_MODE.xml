@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_AGENT_2_AGENT.PRV.INCLUDE.NORMALIZE_PATHS_AND_UPDATE_WILDCARD_MODE</name>
+         <type>JOBI</type>
+         <versioning_id>-1080032165</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:PRINT Execution triggerd by Deployment Descriptor: YES
+:PRINT Normalize source path, target path and update wildcard mode according to paths is folder or file
+
+:SET &UC4RB_DFFT_WILDCARD# = "NO"
+
+:DEFINE &SRC_FILE_END_CHAR#, string
+:SET &SRC_FILE_LENGTH# = STR_LENGTH(&UC4RB_DFFT_SOURCE_FILES#)
+:IF &SRC_FILE_LENGTH# > 0
+:  SET &SRC_FILE_END_CHAR# = STR_CUT(&UC4RB_DFFT_SOURCE_FILES#, &SRC_FILE_LENGTH#, 1)
+:ELSE
+:  SET &SRC_FILE_END_CHAR# = ""
+:ENDIF
+
+:DEFINE &TGT_FILE_END_CHAR#, string
+:SET &TGT_FILE_LENGTH# = STR_LENGTH(&UC4RB_DFFT_TARGET_FILES#)
+:IF &TGT_FILE_LENGTH# > 0
+:  SET &TGT_FILE_END_CHAR# = STR_CUT(&UC4RB_DFFT_TARGET_FILES#, &TGT_FILE_LENGTH#, 1)
+:ELSE
+:  SET &TGT_FILE_END_CHAR# = ""
+:ENDIF
+
+:IF &SRC_FILE_END_CHAR# = "\" OR "/"
+:  DEFINE &UC4RB_SRC_FILES_DIR1#, string
+:  SET &UC4RB_SRC_FILES_DIR1# = STR_CAT(&UC4RB_DFFT_SOURCE_FILES#, "*")
+:  PSET &UC4RB_DFFT_SOURCE_SUBDIR# = "YES"
+:  PSET &UC4RB_DFFT_SOURCE_FILES# = &UC4RB_SRC_FILES_DIR1#
+:  PSET &UC4RB_DFFT_WILDCARD# = "YES"
+:ENDIF
+
+:DEFINE &UC4RB_TGT_FILES_DIR1#, string
+:IF &UC4RB_DFFT_WILDCARD# = "YES"
+:  IF &TGT_FILE_END_CHAR# = "\" OR "/"
+:    SET &UC4RB_TGT_FILES_DIR1# = STR_CAT(&UC4RB_DFFT_TARGET_FILES#, "*")
+:    PSET &UC4RB_DFFT_TARGET_FILES# = &UC4RB_TGT_FILES_DIR1#
+:  ELSE
+:    SET &UC4RB_TGT_FILES_DIR1# = STR_CAT(&UC4RB_DFFT_TARGET_FILES#, "/*")
+:    PSET &UC4RB_DFFT_TARGET_FILES# = &UC4RB_TGT_FILES_DIR1#
+:  ENDIF
+:ENDIF
+
+:PRINT UC4RB_DFFT_WILDCARD# was set to "&UC4RB_DFFT_WILDCARD#
+]]></process>
+      </row>
+   </scripts>
+</jobi>

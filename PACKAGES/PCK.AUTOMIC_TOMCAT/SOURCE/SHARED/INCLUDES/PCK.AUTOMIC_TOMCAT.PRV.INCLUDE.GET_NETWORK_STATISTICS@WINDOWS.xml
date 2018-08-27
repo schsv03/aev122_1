@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.INCLUDE.GET_NETWORK_STATISTICS@WINDOWS</name>
+         <type>JOBI</type>
+         <versioning_id>-582427848</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[function Get-NetworkStatistics
+{
+    $properties = 'LocalAddress','LocalPort','State','ProcessName','PID'
+
+    netstat -ano | Select-String -Pattern '\s+(TCP)' | ForEach-Object {
+
+        $item = $_.line.split(" ",[System.StringSplitOptions]::RemoveEmptyEntries)
+
+        if (($item[1] -notmatch '^\[::'))
+        {
+            if (($la = $item[1] -as [ipaddress]).AddressFamily -eq 'InterNetworkV6')
+            {
+               $localAddress = $la.IPAddressToString
+               $localPort = $item[1].split('\]:')[-1]
+            }
+            else
+            {
+                $localAddress = $item[1].split(':')[0]
+                $localPort = $item[1].split(':')[-1]
+            }
+
+            New-Object PSObject -Property @{
+                PID = $item[-1]
+                ProcessName = (Get-Process -Id $item[-1] -ErrorAction SilentlyContinue).Name
+                State = if($item[0] -eq 'tcp') {$item[3]} else {$null}
+                LocalAddress = $localAddress
+                LocalPort = $localPort
+            } | Select-Object -Property $properties
+        }
+    }
+}]]></process>
+      </row>
+   </scripts>
+</jobi>

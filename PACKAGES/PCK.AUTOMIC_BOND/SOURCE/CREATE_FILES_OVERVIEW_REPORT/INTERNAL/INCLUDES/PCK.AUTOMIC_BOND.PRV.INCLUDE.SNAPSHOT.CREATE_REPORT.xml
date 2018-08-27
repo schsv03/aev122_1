@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.INCLUDE.SNAPSHOT.CREATE_REPORT</name>
+         <type>JOBI</type>
+         <versioning_id>-1604925014</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.AUTOMIC_BOND.PUB.INCLUDE.ATTACH
+
+:IF &UC4RB_REPORT_TYPE# = "Overview"
+:  INC PCK.AUTOMIC_FILESYSTEM.PRV.INCLUDE.COMPARE_OVERVIEW
+   java -jar "&$AGENT_RESOURCES_CLIENT#snapshot-tool.jar" snapshot CompareFileSnapshot &UC4RB_SQL_OVERVIEW_COMMAND#
+:ENDIF
+
+:IF &UC4RB_REPORT_TYPE# = "Compare"
+:    INC PCK.AUTOMIC_FILESYSTEM.PRV.INCLUDE.COMPARE
+     java -jar "&$AGENT_RESOURCES_CLIENT#snapshot-tool.jar" snapshot CompareFileSnapshot &UC4RB_SQL_COMPARE_COMMAND#
+:ENDIF
+:IF &UC4RB_REPORT_TYPE# = "Detail"
+
+:  IF &UC4RB_SNAPSHOT_TYPE# = "TOMCAT"
+:  JCL_CONCAT_CHAR "?"
+      java -jar "&$AGENT_RESOURCES_CLIENT#tomcat-tool.jar" snapshot DetailedCompareTomcatSnapshot "&UC4RB_ARCHIVE_PATH#/&UC4RB_SNAPSHOT_GUID#" ?
+      "&UC4RB_FILE_NAME1#" ?
+      "&UC4RB_FILE_NAME1#-Result.xml"
+:  JCL_CONCAT_CHAR
+:  ELSE
+:        INC PCK.AUTOMIC_FILESYSTEM.PRV.INCLUDE.COMPARE_DETAIL
+      java -jar "&$AGENT_RESOURCES_CLIENT#snapshot-tool.jar" snapshot DetailedCompareFileSnapshot &UC4RB_SQL_DETAIL_COMMAND#
+:    ENDIF
+:ENDIF]]></process>
+      </row>
+   </scripts>
+</jobi>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <platform>GENERIC</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_PROVISIONING.PRV.JOB.AGENT_REMOVE@GENERIC</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>-1517672329</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SWITCH &$PLATFORM#
+:CASE "WINDOWS"
+@echo off
+:CASE "UNIX"
+
+:OTHER
+:  STOP NOMSG, 50, "Unknown Platform"
+:ENDSWITCH
+!-------------------------------------Logging input parameters-------------------------------------------------------------------------------------------------
+:INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.HEADER.PARAM_VALIDATION
+:SET &UC4RB_LOGGING_PARAMETER# = "AE Host"
+:SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_AR_AEHOST#"
+:INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+:SET &UC4RB_LOGGING_PARAMETER# = "AE Port"
+:SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_AR_AEPORT#"
+:INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+:SET &UC4RB_LOGGING_PARAMETER# = "Service User"
+:SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_AR_USERNAME#"
+:INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+:SET &UC4RB_LOGGING_PARAMETER# = "Password"
+:SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_AR_PASSWORD#"
+:INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+
+:SET &UC4RB_AR_AGENTS# = ""
+:SET &HND#=PREP_PROCESS_VAR(PCK.AUTOMIC_PROVISIONING.PUB.VAR.PROVISIONING_AGENTS,,"TO_BE_REMOVED",1)
+:PROCESS &HND#
+:   SET &KEY# = GET_PROCESS_LINE(&HND#,1)
+:   SET &VALUE# = GET_PROCESS_LINE(&HND#,2)
+:   SET &UC4RB_AR_AGENTS# = STR_CAT(&UC4RB_AR_AGENTS#, ",&KEY#")
+:   DELETE_VAR "PCK.AUTOMIC_PROVISIONING.PUB.VAR.PROVISIONING_AGENTS", &KEY#
+:ENDPROCESS
+:CLOSE_PROCESS &HND#
+
+:IF &UC4RB_AR_AGENTS# = ""
+:  STOP NOMSG, 0, "None of Agent to be removed"
+:ENDIF
+
+! Setting execution environment
+:INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.HEADER.EXECUTION
+:ATTACH_RES "PCK.AUTOMIC_PROVISIONING.PRV.STORE", "PROVISIONINGTOOL.JAR", C, N
+!------------------------------------------ Buidling java arguments --------------------------------------------------------------------------------------------
+:DEFINE &UC4RB_JAVA_ARGUMENTS#, string
+:SET &UC4RB_JAVA_ARGUMENTS# = STR_CAT(&UC4RB_JAVA_ARGUMENTS#, '"&UC4RB_AR_AEHOST#" ')
+:SET &UC4RB_JAVA_ARGUMENTS# = STR_CAT(&UC4RB_JAVA_ARGUMENTS#, '"&UC4RB_AR_AEPORT#" ')
+:SET &UC4RB_JAVA_ARGUMENTS# = STR_CAT(&UC4RB_JAVA_ARGUMENTS#, '"&UC4RB_AR_USERNAME#" ')
+:SET &UC4RB_JAVA_ARGUMENTS# = STR_CAT(&UC4RB_JAVA_ARGUMENTS#, '"&UC4RB_AR_PASSWORD#" ')
+! :SET &UC4RB_JAVA_ARGUMENTS# = STR_CAT(&UC4RB_JAVA_ARGUMENTS#, '"&$SYS_LANGUAGE#" ')
+:SET &UC4RB_JAVA_ARGUMENTS# = STR_CAT(&UC4RB_JAVA_ARGUMENTS#, '"&UC4RB_AR_AGENTS#" ')
+
+:SET &UC4RB_JAVA_CLASS# = "AgentRemove"
+! Invoking java binary
+java -jar "&$AGENT_RESOURCES_CLIENT#provisioning-tool.jar" &UC4RB_JAVA_CLASS# &UC4RB_JAVA_ARGUMENTS#
+
+:SWITCH &$PLATFORM#
+:CASE "WINDOWS"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_CMDLINE_CMD@WINDOWS
+:CASE "UNIX"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+:ENDSWITCH
+
+! Status messages
+:SET &UC4RB_LOGGING_INFO# = "******** AGENT REMOVE ACTION EXECUTED SUCCESSFULLY ********"
+:SET &UC4RB_LOGGING_ERROR# = "******** AGENT REMOVE ACTION FAILED ********"
+
+:INC PCK.AUTOMIC_PROVISIONING.PRV.INCLUDE.CHECK_JOBSTATUS]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <platform>GENERIC</platform>
+         <agent><![CDATA[<GENERIC>]]></agent>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

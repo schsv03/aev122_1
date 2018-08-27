@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobp>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <child_queue>*OWN</child_queue>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <workflow_children>4</workflow_children>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_DM.PUB.ACTION.CUSTOMIZE_CONFIG</name>
+         <has_prompts>1</has_prompts>
+         <type>JOBP</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>DM Config file customization</description>
+         <versioning_id>-111932479</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu><![CDATA[Use this function in your component flow to customize your configuration files based on the replacement description in the Deployment Manager. The replacement rules are described as a set of dynamic properties.
+
+To set up the config file adaptation you need the carry out the following steps:
+
+1. drag & drop this action to your workflow
+2. Define the 'Replacement strategy' parameter, which can be one of the follows:
+
+* '''ini''':  updates/creates variables in an ini-file.
+* '''java properties''':  updates/creates variables in a java .properties file.     
+* '''xml''': updates xml elements or attributes in an xml file. The patterns are matched by xpath-expressions.
+* '''string''': arbitrary text patterns (based on exact matches) are replaced by an other text.
+* '''regex''': arbitrary text patterns (defined by regular expressions) are replaced by on other text. The regex search mechanism is gredy, meaning, that the shortest text matching the regular expression is replaced.
+
+3. The adaptation process is managed by a set of dynamic properties in the Deployment Manager. The dynamic properties should be defined in an own namespace on the component. Provide the namespace as parameter 'Config namespace' to this action. The action extracts the mappings from the dynamic properties and carries out all replacements. See below the examples how the dynamic properties should be defined.
+
+###Basepath and Relative filepath###
+The filepath is a relative location to the 'Basepath'. Internally an absolut path are calculated based on the concatenation of 'Basepath'/'Relative filepath'. Example: to match all ini-files in the config subfolder of the application's staging directory (absolute path: c:\temp\myapp\config\*.ini):
+
+Basepath = c:\temp\myapp\
+
+Relative filepath = config\*.ini
+
+You may use * or ** to match multiple directories or files:
+use of *: Matches any characters up to the next slash. Eg, */*/configfile* collects any files starting with the name "configfile" in any subdirectory with depth 2
+use of **: Matches any characters. Eg, **/something/myConfig.ini collects any myConfig.ini files in any subdirectory named "something".
+
+###Customization within an archive###
+This function can also be used to costomize files within zip archives. 
+Supported file endings are: 
+* .zip
+* .war
+* .ear
+* .jar
+* .sar
+Set the 'Basepath' to the directory containing the zip file.
+Configure the Relative filepath to point to the archive and the config files that should be adopted.
+To adopt a config.xml within an archive called archive.zip:
+Basepath: /path/to/folder/with/the/archive 
+Relative filepath: archive.zip/config.xml 
+
+To adopt all config.xml within the archive the Relative filepath must be changed to **/config.xml. See above for more information.
+
+You may point to a (set of) configuration file(s) inside of a war, ear, jar, zip, .sar file. In such a case the file will be temporarily unpacked, changed and repacked again.
+Syntax to match e.g. all ini-files in the config subdirectory of a zip file: myApplicationComponents/myfile.zip/config/*.ini
+
+###Customization of *.ini-files###
+
+To give an example, assume, your ini-file is as follows:
+
+    [GLOBAL]
+    cmd="javaw" -xXmx1024m -Dsun.locale=true
+    path=.
+    title=myTitle
+    [ENVIRONMENT]
+    classpath=.;.\ucdj.jar  
+
+1. Set up the following dynamic properties in a namespace "/config_adaptation/ini/" in the Deployment Manager:
+* /config_adaptation/ini/cmd_replace: cmd=>"java" -Xmx512m
+* /config_adaptation/ini/env_replace: ENVIRONMENT.classpath => .;.\ucdj.jar;.\myLib.jar
+* /config_adaptation/ini/snd_create: SPLASH.sound=>uc4.wav
+* /config_adaptation/ini/title_remove: title =>
+
+2. Set the parameters of the runbook function as follows:
+* 'Replacement strategy': INI
+* 'Config namespace': /config_adaptation/ini/
+* 'Basepath': c:\myProduct\
+* 'Relative filepath': myConfig.ini
+* 'Key Value separator': =>
+
+Based on this set-up, the following replacements are carried out:
+
+* the value of cmd_replace in section [GLOBAL] is updated to value "java" -Xmx512m.
+* the value of classpath in section [ENVIRONMENT] is updated to value .;\ucdj.jar;myLib.jar.
+* a new variable sound in a new section [SPLASH] is created with the value uc4.wav.
+* the value of the variable title in section [GLOBAL] is removed. The variable itself is not removed.
+
+###Customization of java *.properties files###
+
+The key and element characters $, #, !, =, and : in the properties that are added or updated are automatically escaped with a preceding backslash.
+
+Assume, your java properties-file is as follows:
+    l1.l2.value=myValue
+    myVariable=myOldValue  
+
+1. Set up the following dynamic properties in a namespace "/config_adaptation/java/" in the deployment manager:
+* /config_adaptation/java/replace1: l1.l2.value =>
+* /config_adaptation/java/replace2: myVariable => myNewValue
+
+2. Set the parameters of the runbook function as follows:
+* 'Replacement strategy': JAVA PROPERTIES
+* 'Config namespace': /config_adaptation/java/
+* 'Basepath': c:\myProduct\
+* 'Relative filepath': myConfig.properties
+* 'Key Value separator': =>
+
+3. Based on this set-up, the following replacements are carried out:
+* the value of myVariable updated to value myValue. If the variable does not exist, a new one is created.
+* the value of l1.l2.value is removed (the variable itself will not be removed). If the variable does not exist, a new one is created with an empty value.
+
+###Customization of XML files###
+
+This action can update attributes or the content of a node in an xml file. Creating new attributes or nodes is not supported. 
+Namespaced xml files are not supported.
+
+Assume, your XML file is as follows (XML declaration is required):
+
+<?xml version="1.0"?>
+<connection>
+	<add key="SMTPServer.Host" value="" />
+	<add key="SMTPServer.Port" value="25" />
+	<add key="SMTPServer.User" value="" />
+	<add key="SMTPServer.Password" value="" />
+	<add key="SMTPServer.EnableSSL" value="true" />
+</connection>
+
+1. Set up the following dynamic properties in a namespace "/config_adaptation/xml/" in the deployment manager:
+* /config_adaptation/xml/smtp_update_port: //connection/add[@key="SMTPServer.Port"]/@value=>80
+* /config_adaptation/xml/smtp_update_host: //connection/add[@key="SMTPServer.Host"]/@value=>192.168.44.20
+* /config_adaptation/xml/smtp_update_enable_ssl: //connection/add[@key="SMTPServer.EnableSSL"]=>new content
+* /config_adaptation/xml/smtp_update_password: //connection/add[@key="SMTPServer.Password"]/@value=>password (Set this dynamic properties as Protected)
+
+2. Set the parameters of the runbook function as follows:
+* 'Replacement strategy': XML
+* 'Config namespace': /config_adaptation/xml/
+* 'Basepath': c:\myProduct\
+* 'Relative filepath': web.config
+* 'Key Value separator': =>
+
+3. Based on this set-up, the following replacements are carried out:
+* the attribute value of the element with name "SMTPServer.Port" is set to "80"
+* the attribute value of the element with key "SMTPServer.Host" is set to "192.168.44.20"
+* the content of the element with key "SMTPServer.EnableSSL" is set to "new content" 
+* the attribute value of the element with key "SMTPServer.Password" is set to "the decrypted password", note that the password is not included in any report but only in the xml file 
+
+<?xml version="1.0"?>
+<connection>
+	<add key="SMTPServer.Host" value="192.168.44.20" />
+	<add key="SMTPServer.Port" value="80" />
+	<add key="SMTPServer.User" value="" />
+	<add key="SMTPServer.Password" value="the decrypted password" />
+	<add key="SMTPServer.EnableSSL" value="true" >new content</add>
+</connection>
+
+###String replacements###
+
+Use the text replacement mechanism to update arbitrary parts of a text file. The patterns are treated as strings, not as regular expressions. Create the following dynamic properties in an arbitrary namespace. 
+
+* Each dynamic property should define a pattern => value pair, with the following meaning:
+  * contained in arbitrary named dynamic variables. 
+  * Patterns are treated as regular text
+  * All occurances of the pattern are replaced by the value
+  * An empty string after '=>' deletes the matches found
+
+1. Set up the following dynamic properties in a namespace "/config_adaptation/string/" in the deployment manager:
+* /config_adaptation/string/replace1: my-pattern=>myValue
+* /config_adaptation/string/replace2: DataSource=DATA_SOURCE => DataSource=localhost:1443
+
+2. Set the parameters of the runbook function as follows:
+* 'Replacement strategy': STRING
+* 'Config namespace': /config_adaptation/string/
+* 'Basepath': c:\myProduct\
+  * 'Relative filepath': web.txt
+  * 'Key Value separator': =>
+
+3. Based on this set-up, the following replacements are carried out:
+* all occurrances of the string my-pattern are replaced by myValue
+* all occurrances of the string DataSource=DATA_SOURCE is replaced by DataSource=localhost:1433
+
+###Replacements based on regular expressions###
+
+Use the 'regex' replacement mechanism to update arbitrary parts of a text file matched by a regular expression pattern. Create the following dnyamic properties in an arbitrary namespace. Each dynamic property should define a pattern => value pair, with the following meaning:
+* Patterns are treated as regular expressions.
+* The regex search mechanism is greedy, meaning, that the shortest text matching the regular expression is replaced
+* note, that brackets { } have a special meaning in the Release Manager when used in expression-based dynamic properties. Since brackets can not be escaped,  set the property evaluation to 'Static'
+* All occurances of the pattern are replaced by the value
+* An empty string after '=>' deletes the matches found
+
+1. Set up the following dynamic properties in a namespace "/config_adaptation/regex/" in the deployment manager:
+* /config_adaptation/regex/replace1:  ^.*example.*$ => my-new-value
+* /config_adaptation/regex/replace2: DataSource=DATA_SOURCE => DataSource=localhost:1443
+
+2. Set the parameters of the runbook function as follows:
+* 'Replacement strategy': REGEX
+* 'Config namespace': /config_adaptation/string/
+* 'Basepath': c:\myProduct\
+* 'Relative filepath': web.txt
+* 'Key Value separator': =>
+   
+3. Based on this set-up, the following replacements are carried out:
+* all occurrances of the regular expression ^.*example.*$ are replaced by my-new-value
+* all occurrances of the string DataSource=DATA_SOURCE is replaced by DataSource=localhost:1433
+
+    ]]></Docu>
+      </row>
+   </documentation>
+   <workflow_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <reuse_agent_group>1</reuse_agent_group>
+      </row>
+   </workflow_attributes>
+   <workflow_definitions>
+      <row>
+         <active>1</active>
+         <childflags>0000000000000000</childflags>
+         <column>1</column>
+         <line_number>1</line_number>
+         <mrt_time>000000</mrt_time>
+         <object_name>START</object_name>
+         <object_type><![CDATA[<START>]]></object_type>
+         <row>2</row>
+         <precondition_error_action>S</precondition_error_action>
+      </row>
+      <row>
+         <active>1</active>
+         <childflags>0000000000000000</childflags>
+         <column>2</column>
+         <line_number>2</line_number>
+         <mrt_time>000000</mrt_time>
+         <object_name>PCK.AUTOMIC_DM.PRV.JOB.CUSTOMIZE_CONFIG@WINDOWS</object_name>
+         <object_type>JOBS</object_type>
+         <predecessors>1</predecessors>
+         <rollback_enabled>1</rollback_enabled>
+         <row>1</row>
+         <precondition_error_action>A</precondition_error_action>
+      </row>
+      <row>
+         <active>1</active>
+         <childflags>0000000000000000</childflags>
+         <column>2</column>
+         <line_number>3</line_number>
+         <mrt_time>000000</mrt_time>
+         <object_name>PCK.AUTOMIC_DM.PRV.JOB.CUSTOMIZE_CONFIG@UNIX</object_name>
+         <object_type>JOBS</object_type>
+         <predecessors>1</predecessors>
+         <rollback_enabled>1</rollback_enabled>
+         <row>3</row>
+         <precondition_error_action>A</precondition_error_action>
+      </row>
+      <row>
+         <active>1</active>
+         <childflags>0000000000000000</childflags>
+         <column>3</column>
+         <line_number>4</line_number>
+         <mrt_time>000000</mrt_time>
+         <object_name>END</object_name>
+         <object_type><![CDATA[<END>]]></object_type>
+         <predecessors>2</predecessors>
+         <row>2</row>
+         <precondition_error_action>A</precondition_error_action>
+      </row>
+   </workflow_definitions>
+   <line_conditions>
+      <row>
+         <workflow_line_number>2</workflow_line_number>
+         <line_number>1</line_number>
+         <predecessor_line_number>1</predecessor_line_number>
+         <ok_status>ANY_OK</ok_status>
+      </row>
+      <row>
+         <workflow_line_number>3</workflow_line_number>
+         <line_number>1</line_number>
+         <predecessor_line_number>1</predecessor_line_number>
+         <ok_status>ANY_OK</ok_status>
+      </row>
+      <row>
+         <workflow_line_number>4</workflow_line_number>
+         <line_number>1</line_number>
+         <predecessor_line_number>3</predecessor_line_number>
+         <ok_status>ANY_OK</ok_status>
+      </row>
+      <row>
+         <workflow_line_number>4</workflow_line_number>
+         <line_number>2</line_number>
+         <predecessor_line_number>2</predecessor_line_number>
+         <ok_status>ANY_OK</ok_status>
+      </row>
+   </line_conditions>
+   <prompt_set_list>
+      <row>
+         <line_number>1</line_number>
+         <prompt_set>PCK.AUTOMIC_DM.PRV.PROMPTSET.CUSTOMIZE_CONFIG</prompt_set>
+         <display_order>1</display_order>
+      </row>
+      <row>
+         <line_number>2</line_number>
+         <prompt_set>PCK.AUTOMIC_DM.PRV.PROMPTSET.RM_CONNECTION_SETTINGS</prompt_set>
+         <display_order>2</display_order>
+      </row>
+      <row>
+         <line_number>3</line_number>
+         <prompt_set>PCK.ITPA_SHARED.PRV.PROMPTSET.OVERWRITE_AGENT</prompt_set>
+         <display_order>3</display_order>
+      </row>
+   </prompt_set_list>
+   <prompt_set_defaults>
+      <row>
+         <prompt_set_element_number>1</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_DM.PRV.PROMPTSET.CUSTOMIZE_CONFIG</prompt_set>
+         <variable_name>UC4RB_COMPONENT_NAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>1</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_DM.PRV.PROMPTSET.CUSTOMIZE_CONFIG</prompt_set>
+         <variable_name>UC4RB_TARGET_NAME#</variable_name>
+      </row>
+   </prompt_set_defaults>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobp>

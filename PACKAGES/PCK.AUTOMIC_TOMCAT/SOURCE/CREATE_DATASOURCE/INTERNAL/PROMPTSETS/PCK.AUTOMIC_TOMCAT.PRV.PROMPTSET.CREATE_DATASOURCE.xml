@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prpt>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.PROMPTSET.CREATE_DATASOURCE</name>
+         <type>PRPT</type>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>-237847750</versioning_id>
+      </row>
+   </general_attributes>
+   <gui_description>
+      <row>
+         <xui><![CDATA[<dialog height="506" icon="PRPT" id="PRPTS" left="279" top="4" width="420"><readpanel fill="b" id="PRPTBOX" nl="1" scroll="v" text="Parameters"><properties><entry name="text">Parameters</entry><entry name="modifiable">0</entry></properties></readpanel></dialog>]]></xui>
+      </row>
+   </gui_description>
+   <elements>
+      <row>
+         <line_number>19</line_number>
+         <name>UC4RB_TC_TEST_ON_BORROW#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>YES</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_TEST_ON_BORROWs.00" nl="1" quotes="" text="Test on borrow" tooltip="Whether a connection should be validated using the validation query each time it is borrowed from the pool." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Test on borrow</entry><entry name="quotes"/><entry name="id">UC4RB_TC_TEST_ON_BORROWs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Whether a connection should be validated using the validation query each time it is borrowed from the pool.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>20</line_number>
+         <name>UC4RB_TC_TEST_ON_RETURN#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_TEST_ON_RETURNs.00" nl="1" quotes="" text="Test on return" tooltip="Whether a connection should be validated using the validation query each time it is returned to the pool." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Test on return</entry><entry name="quotes"/><entry name="id">UC4RB_TC_TEST_ON_RETURNs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Whether a connection should be validated using the validation query each time it is returned to the pool.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>21</line_number>
+         <name>UC4RB_TC_TIME_BETW_EVICT#</name>
+         <reference>UC_DATATYPE_NUMERIC</reference>
+         <reference_type>VARA</reference_type>
+         <value>1800000</value>
+         <xui><![CDATA[<integer enabled="1" fill="b" focus="0" id="UC4RB_TC_TIME_BETW_EVICTs.00" max="" min="" nl="1" text="Time between eviction runs (ms)" tooltip="The number of milliseconds between consecutive runs of the evictor. Default: 30*60*1000 (30 minutes)" alt="1"><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_NUMERIC</entry><entry name="text">Time between eviction runs (ms)</entry><entry name="min"/><entry name="max"/><entry name="quotes"/><entry name="id">UC4RB_TC_TIME_BETW_EVICTs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">The number of milliseconds between consecutive runs of the evictor. Default: 30*60*1000 (30 minutes)</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue">0</entry></properties></integer>]]></xui>
+         <ui_type>integer</ui_type>
+      </row>
+      <row>
+         <line_number>22</line_number>
+         <name>UC4RB_TC_NR_TEST_BETW_EVICT#</name>
+         <reference>UC_DATATYPE_NUMERIC</reference>
+         <reference_type>VARA</reference_type>
+         <value>3</value>
+         <xui><![CDATA[<integer enabled="1" fill="b" focus="0" id="UC4RB_TC_NR_TEST_BETW_EVICTs.00" max="" min="" nl="1" text="Number of tests per eviction runs (ms)" tooltip="The number of connections that will be checked for idleness by the evitor during each run of the evictor." alt="1"><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_NUMERIC</entry><entry name="text">Number of tests per eviction runs (ms)</entry><entry name="min"/><entry name="max"/><entry name="quotes"/><entry name="id">UC4RB_TC_NR_TEST_BETW_EVICTs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">The number of connections that will be checked for idleness by the evitor during each run of the evictor.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue">0</entry></properties></integer>]]></xui>
+         <ui_type>integer</ui_type>
+      </row>
+      <row>
+         <line_number>27</line_number>
+         <name>UC4RB_TC_DEFAULT_TRANSACT_ISOL#</name>
+         <reference>PCK.AUTOMIC_TOMCAT.PRV.VARA.DEFAULT_TRANSACT_ISOL</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO DEFAULT</value>
+         <xui><![CDATA[<combo dynamic="0" enabled="1" fill="b" focus="0" id="UC4RB_TC_DEFAULT_TRANSACT_ISOLs.00" nl="1" quotes="" text="Default transaction isolation" tooltip="This sets the default transaction isolation level." alt="1" filter="0" strict="1" vtype="i"><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command owner="_self" owneraction="setsource" ownerparam="src|_dialog@src"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptcombolist" target="_self" targetaction="setlist" wait="0"/><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.AUTOMIC_TOMCAT.PRV.VARA.DEFAULT_TRANSACT_ISOL</entry><entry name="text">Default transaction isolation</entry><entry name="quotes"/><entry name="id">UC4RB_TC_DEFAULT_TRANSACT_ISOLs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">This sets the default transaction isolation level.</entry><entry name="customfield"/><entry name="dynamic">0</entry><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="onchangereset"/><entry name="resetable">1</entry></properties></combo>]]></xui>
+         <ui_type>combo</ui_type>
+      </row>
+      <row>
+         <line_number>36</line_number>
+         <name>UC4RB_TC_RESTART_MODE#</name>
+         <reference>PCK.AUTOMIC_TOMCAT.PRV.VARA.SCRIPT_SERVICE</reference>
+         <reference_type>VARA</reference_type>
+         <value>SCRIPT</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_RESTART_MODEs.00" nl="1" quotes="" text="Restart mode" tooltip="If &apos;script mode&apos; the action starts Tomcat using the startup.bat/startup.sh script of Tomcat found in UC4RB_TC_HOME_DIR#/bin/    If &apos;no&apos;, it is assumed, that the Windows service/Unix deamon is preconfigured and the action starts the service/deamon." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.AUTOMIC_TOMCAT.PRV.VARA.SCRIPT_SERVICE</entry><entry name="text">Restart mode</entry><entry name="quotes"/><entry name="id">UC4RB_TC_RESTART_MODEs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">If &apos;script mode&apos; the action starts Tomcat using the startup.bat/startup.sh script of Tomcat found in UC4RB_TC_HOME_DIR#/bin/
+
+If &apos;no&apos;, it is assumed, that the Windows service/Unix deamon is preconfigured and the action starts the service/deamon.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>23</line_number>
+         <name>UC4RB_TC_MIN_EVCT_IDLE_TIME#</name>
+         <reference>UC_DATATYPE_NUMERIC</reference>
+         <reference_type>VARA</reference_type>
+         <value>-1</value>
+         <xui><![CDATA[<integer enabled="1" fill="b" focus="0" id="UC4RB_TC_MIN_EVCT_IDLE_TIMEs.00" max="" min="" nl="1" text="Minimum evictable idle time (ms)" tooltip="The idle time in milliseconds after which a connection can be removed from the pool by the evictor." alt="1"><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_NUMERIC</entry><entry name="text">Minimum evictable idle time (ms)</entry><entry name="min"/><entry name="max"/><entry name="quotes"/><entry name="id">UC4RB_TC_MIN_EVCT_IDLE_TIMEs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">The idle time in milliseconds after which a connection can be removed from the pool by the evictor.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue">0</entry></properties></integer>]]></xui>
+         <ui_type>integer</ui_type>
+      </row>
+      <row>
+         <line_number>24</line_number>
+         <name>UC4RB_TC_TEST_WHILE_IDLE#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_TEST_WHILE_IDLEs.00" nl="1" quotes="" text="Test while idle" tooltip="Whether a connection should be validated by the evictor thread using the validation query while sitting idle in the pool." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Test while idle</entry><entry name="quotes"/><entry name="id">UC4RB_TC_TEST_WHILE_IDLEs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Whether a connection should be validated by the evictor thread using the validation query while sitting idle in the pool.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>25</line_number>
+         <name>UC4RB_TC_DEFAULT_AUTO_COMMIT#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>YES</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_DEFAULT_AUTO_COMMITs.00" nl="1" quotes="" text="Default auto commit" tooltip="default auto-commit state of the connections created by this pool." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Default auto commit</entry><entry name="quotes"/><entry name="id">UC4RB_TC_DEFAULT_AUTO_COMMITs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">default auto-commit state of the connections created by this pool.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>26</line_number>
+         <name>UC4RB_TC_DEFAULT_READ_ONLY#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_DEFAULT_READ_ONLYs.00" nl="1" quotes="" text="Default read only" tooltip="default read-only state of the connections created by this pool." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Default read only</entry><entry name="quotes"/><entry name="id">UC4RB_TC_DEFAULT_READ_ONLYs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">default read-only state of the connections created by this pool.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>28</line_number>
+         <name>UC4RB_TC_POOL_PREP_STATEMENTS#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_POOL_PREP_STATEMENTSs.00" nl="1" quotes="" text="Pool prepared statements" tooltip="pool PreparedStatements and CallableStatements." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Pool prepared statements</entry><entry name="quotes"/><entry name="id">UC4RB_TC_POOL_PREP_STATEMENTSs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">pool PreparedStatements and CallableStatements.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>34</line_number>
+         <name>UC4RB_TC_FAIL_IF_EXISTS#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_FAIL_IF_EXISTSs.00" nl="1" quotes="" text="Fail if existing" tooltip="Boolean value specifying whether the job should fail in case the datasource already exists." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Fail if existing</entry><entry name="quotes"/><entry name="id">UC4RB_TC_FAIL_IF_EXISTSs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Boolean value specifying whether the job should fail in case the datasource already exists.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>35</line_number>
+         <name>UC4RB_TC_RESTART_TOMCAT#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>YES</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_RESTART_TOMCATs.00" nl="1" quotes="" text="Restart Tomcat" tooltip="As the datasource is put into the server.xml file, the Tomcat should normally be restarted in order that changes become effective. As default, Tomcat should be restarted." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Restart Tomcat</entry><entry name="quotes"/><entry name="id">UC4RB_TC_RESTART_TOMCATs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">As the datasource is put into the server.xml file, the Tomcat should normally be restarted in order that changes become effective. As default, Tomcat should be restarted.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>1</line_number>
+         <name>UC4RB_TC_HOME_DIR#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <is_required>1</is_required>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_HOME_DIRs.00" inputassistance="0" len="" nl="1" regex="" separator=";" showaspassword="0" text="Home" tooltip="Path to the Tomcat home directory on the executing machine. Eg: C:\Program Files\Apache Software Foundations\Tomcat7\" upper="0" required="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Home</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_HOME_DIRs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Path to the Tomcat home directory on the executing machine. Eg: C:\Program Files\Apache Software Foundations\Tomcat7\</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>6</line_number>
+         <name>UC4RB_TC_DS_PWD#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <is_required>1</is_required>
+         <separator>;</separator>
+         <show_as_password>1</show_as_password>
+         <value>--10</value>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_PWDs.00" inputassistance="0" len="" nl="1" regex="" separator=";" showaspassword="1" text="DataSource password" tooltip="Database password to be passed to our JDBC driver." upper="0" required="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">DataSource password</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_PWDs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">1</entry><entry name="tooltip">Database password to be passed to our JDBC driver.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>18</line_number>
+         <name>UC4RB_TC_VALD_QUERY_TIMEOUT#</name>
+         <reference>UC_DATATYPE_NUMERIC</reference>
+         <reference_type>VARA</reference_type>
+         <value>-1</value>
+         <xui><![CDATA[<integer enabled="1" fill="b" focus="0" id="UC4RB_TC_VALD_QUERY_TIMEOUTs.00" max="" min="" nl="1" text="Validation query timeout" tooltip="Timeout in seconds for the validation query to return." alt="1"><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_NUMERIC</entry><entry name="text">Validation query timeout</entry><entry name="min"/><entry name="max"/><entry name="quotes"/><entry name="id">UC4RB_TC_VALD_QUERY_TIMEOUTs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Timeout in seconds for the validation query to return.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue">0</entry></properties></integer>]]></xui>
+         <ui_type>integer</ui_type>
+      </row>
+      <row>
+         <line_number>2</line_number>
+         <name>UC4RB_TC_DS_NAME#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <is_required>1</is_required>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_NAMEs.00" inputassistance="0" len="" nl="1" regex="" separator=";" showaspassword="0" text="DataSource name" tooltip="Name of the datasource to create." upper="0" required="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">DataSource name</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_NAMEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Name of the datasource to create.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>3</line_number>
+         <name>UC4RB_TC_RES_LINKS#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>YES</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_RES_LINKSs.00" nl="1" quotes="" text="Add resourcelink to context.xml" tooltip="If set to yes, the conf/context.xml configuration file is extended with a resourcelink pointing to the gloal resource in the server.xml file." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Add resourcelink to context.xml</entry><entry name="quotes"/><entry name="id">UC4RB_TC_RES_LINKSs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">If set to yes, the conf/context.xml configuration file is extended with a resourcelink pointing to the gloal resource in the server.xml file.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>4</line_number>
+         <name>UC4RB_TC_DRIVER#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <is_required>1</is_required>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DRIVERs.00" inputassistance="0" len="" nl="1" regex="" separator=";" showaspassword="0" text="Driver name" tooltip="Fully qualified Java class name of the JDBC driver to be used." upper="0" required="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Driver name</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DRIVERs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Fully qualified Java class name of the JDBC driver to be used.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>5</line_number>
+         <name>UC4RB_TC_DS_USER#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <is_required>1</is_required>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_USERs.00" inputassistance="0" len="" nl="1" regex="" separator=";" showaspassword="0" text="DataSource username" tooltip="Database username to be passed to our JDBC driver." upper="0" required="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">DataSource username</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_USERs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Database username to be passed to our JDBC driver.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>7</line_number>
+         <name>UC4RB_TC_DS_URL#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <is_required>1</is_required>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_URLs.00" inputassistance="0" len="" nl="1" regex="" separator=";" showaspassword="0" text="Url" tooltip="Connection URL to be passed to our JDBC driver." upper="0" required="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Url</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_URLs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Connection URL to be passed to our JDBC driver.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>8</line_number>
+         <name>UC4RB_TC_DS_TYPE#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <value>javax.sql.DataSource</value>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_TYPEs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Resource type" tooltip="Resource type. Default: javax.sql.DataSource" upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Resource type</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_TYPEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Resource type. Default: javax.sql.DataSource</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>9</line_number>
+         <name>UC4RB_TC_REMOVE_ABANDONED#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_REMOVE_ABANDONEDs.00" nl="1" quotes="" text="Remove abandoned" tooltip="A database connection pool creates and manages a pool of connections to a database. Recycling and reusing already existing connections to a database is more efficient than opening a new connection. There is one problem with connection pooling. A web application has to explicitly close ResultSet&apos;s, Statement&apos;s, and Connection&apos;s. Failure of a web application to close these resources can result in them never being available again for reuse, a database connection pool &quot;leak&quot;. This can eventually result in your web application database connections failing if there are no more available connections. There is a solution to this problem. The Apache Commons DB connection pooling (DBCP) can be configured to track and recover these abandoned database connections. Not only can it recover them, but also generate a stack trace for the code which opened these resources and never closed them.    Set this parameter to yes to configure a DB connection pool DataSource so that abandoned database connections are removed and recycled. This parameter adds the option removeAbandoned=&quot;...&quot; to your datasource definition. See http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html#Preventing_database_connection_pool_leaks for more details." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Remove abandoned</entry><entry name="quotes"/><entry name="id">UC4RB_TC_REMOVE_ABANDONEDs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">A database connection pool creates and manages a pool of connections to a database. Recycling and reusing already existing connections to a database is more efficient than opening a new connection. There is one problem with connection pooling. A web application has to explicitly close ResultSet&apos;s, Statement&apos;s, and Connection&apos;s. Failure of a web application to close these resources can result in them never being available again for reuse, a database connection pool &quot;leak&quot;. This can eventually result in your web application database connections failing if there are no more available connections. There is a solution to this problem. The Apache Commons DB connection pooling (DBCP) can be configured to track and recover these abandoned database connections. Not only can it recover them, but also generate a stack trace for the code which opened these resources and never closed them.
+
+Set this parameter to yes to configure a DB connection pool DataSource so that abandoned database connections are removed and recycled. This parameter adds the option removeAbandoned=&quot;...&quot; to your datasource definition. See http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html#Preventing_database_connection_pool_leaks for more details.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>10</line_number>
+         <name>UC4RB_TC_REMOVE_ABND_TIMEOUT#</name>
+         <reference>UC_DATATYPE_NUMERIC</reference>
+         <reference_type>VARA</reference_type>
+         <value>300</value>
+         <xui><![CDATA[<integer enabled="1" fill="b" focus="0" id="UC4RB_TC_REMOVE_ABND_TIMEOUTs.00" max="" min="" nl="1" text="Remove abandoned timeout" tooltip="Use this attribute to set the number of seconds a database connection has been idle before it is considered abandoned. This adds the parameter removeAbandonedTimeout=&quot;...&quot; to your datasource definition." alt="1"><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_NUMERIC</entry><entry name="text">Remove abandoned timeout</entry><entry name="min"/><entry name="max"/><entry name="quotes"/><entry name="id">UC4RB_TC_REMOVE_ABND_TIMEOUTs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Use this attribute to set the number of seconds a database connection has been idle before it is considered abandoned. This adds the parameter removeAbandonedTimeout=&quot;...&quot; to your datasource definition.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue">0</entry></properties></integer>]]></xui>
+         <ui_type>integer</ui_type>
+      </row>
+      <row>
+         <line_number>11</line_number>
+         <name>UC4RB_TC_LOG_ABANDONED#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_LOG_ABANDONEDs.00" nl="1" quotes="" text="Log abandoned" tooltip="Set it to yes if you want DBCP to log a stack trace of the code which abandoned the database connection resources. This parameter adds the option logAbandoned=&quot;...&quot; to your datasource definition." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Log abandoned</entry><entry name="quotes"/><entry name="id">UC4RB_TC_LOG_ABANDONEDs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Set it to yes if you want DBCP to log a stack trace of the code which abandoned the database connection resources. This parameter adds the option logAbandoned=&quot;...&quot; to your datasource definition.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>12</line_number>
+         <name>UC4RB_TC_DS_INITIAL_SIZE#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_INITIAL_SIZEs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Initial size" tooltip="The initial number of connections that will be created in the pool during pool initialization." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Initial size</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_INITIAL_SIZEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">The initial number of connections that will be created in the pool during pool initialization.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>13</line_number>
+         <name>UC4RB_TC_DS_MAX_ACTIVE#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_MAX_ACTIVEs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Max active" tooltip="The maximum number of connections that can be allocated from this pool at the same time." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Max active</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_MAX_ACTIVEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">The maximum number of connections that can be allocated from this pool at the same time.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>14</line_number>
+         <name>UC4RB_TC_DS_MIN_IDLE#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_MIN_IDLEs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Min idle" tooltip="The minimum number of connections that will sit idle in this pool at the same time." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Min idle</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_MIN_IDLEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">The minimum number of connections that will sit idle in this pool at the same time.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>15</line_number>
+         <name>UC4RB_TC_DS_MAX_IDLE#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_MAX_IDLEs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Max idle" tooltip="The maximum number of connections that can sit idle in this pool at the same time." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Max idle</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_MAX_IDLEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">The maximum number of connections that can sit idle in this pool at the same time.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>16</line_number>
+         <name>UC4RB_TC_DS_MAX_WAIT#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DS_MAX_WAITs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Max wait" tooltip="The maximum number of milliseconds that the pool will wait (when there are no available connections) for a connection to be returned before throwing an exception." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Max wait</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DS_MAX_WAITs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">The maximum number of milliseconds that the pool will wait (when there are no available connections) for a connection to be returned before throwing an exception.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>17</line_number>
+         <name>UC4RB_TC_VALIDATION_QUERY#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_VALIDATION_QUERYs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Validation query" tooltip="SQL query that can be used by the pool to validate connections before they are returned to the application. If specified, this query MUST be an SQL SELECT statement that returns at least one row." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Validation query</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_VALIDATION_QUERYs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">SQL query that can be used by the pool to validate connections before they are returned to the application. If specified, this query MUST be an SQL SELECT statement that returns at least one row.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>29</line_number>
+         <name>UC4RB_TC_CONN_INIT_SQLS#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_CONN_INIT_SQLSs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Connection init SQLs" tooltip="A list of SQL statements run once after a Connection is created. Separate multiple statements by semicolons (;)." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Connection init SQLs</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_CONN_INIT_SQLSs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">A list of SQL statements run once after a Connection is created. Separate multiple statements by semicolons (;).</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>30</line_number>
+         <name>UC4RB_TC_MAX_OPEN_PREP_ST#</name>
+         <reference>UC_DATATYPE_NUMERIC</reference>
+         <reference_type>VARA</reference_type>
+         <value>-1</value>
+         <xui><![CDATA[<integer enabled="1" fill="b" focus="0" id="UC4RB_TC_MAX_OPEN_PREP_STs.00" max="" min="" nl="1" text="Max open prepared statements" tooltip="The maximum number of open statements that can be allocated from the statement pool at the same time." alt="1"><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_NUMERIC</entry><entry name="text">Max open prepared statements</entry><entry name="min"/><entry name="max"/><entry name="quotes"/><entry name="id">UC4RB_TC_MAX_OPEN_PREP_STs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">The maximum number of open statements that can be allocated from the statement pool at the same time.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue">0</entry></properties></integer>]]></xui>
+         <ui_type>integer</ui_type>
+      </row>
+      <row>
+         <line_number>31</line_number>
+         <name>UC4RB_TC_DEFAULT_CATALOG#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_DEFAULT_CATALOGs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Default catalog" tooltip="The name of the default catalog." upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Default catalog</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_DEFAULT_CATALOGs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">The name of the default catalog.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>32</line_number>
+         <name>UC4RB_TC_CONN_PROPS#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_CONN_PROPSs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Connection properties" tooltip="A list of driver specific properties passed to the driver for creating connections. Each property is given as name=value, multiple properties are separated by semicolons (;). Default: no properties" upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Connection properties</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_CONN_PROPSs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">A list of driver specific properties passed to the driver for creating connections. Each property is given as name=value, multiple properties are separated by semicolons (;). Default: no properties</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>33</line_number>
+         <name>UC4RB_TC_ACCESS_TO_UNDRL_CONN#</name>
+         <reference>PCK.ITPA_SHARED.PRV.VARA.YES_NO</reference>
+         <reference_type>VARA</reference_type>
+         <value>NO</value>
+         <xui><![CDATA[<dynradiogroup enabled="1" fill="b" focus="0" id="UC4RB_TC_ACCESS_TO_UNDRL_CONNs.00" nl="1" quotes="" text="Access to underlying connection allowed" tooltip="Accessing of underlying connection is allowed." alt="1" required="0"><properties><entry listparam="C" name="reference" reftype="STATIC">PCK.ITPA_SHARED.PRV.VARA.YES_NO</entry><entry name="text">Access to underlying connection allowed</entry><entry name="quotes"/><entry name="id">UC4RB_TC_ACCESS_TO_UNDRL_CONNs.00</entry><entry name="enabled">0</entry><entry name="focus">0</entry><entry name="tooltip">Accessing of underlying connection is allowed.</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/></properties></dynradiogroup>]]></xui>
+         <ui_type>dynradiogroup</ui_type>
+      </row>
+      <row>
+         <line_number>37</line_number>
+         <name>UC4RB_TC_JAVA_OPTIONS#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_JAVA_OPTIONSs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Java Runtime options" tooltip="Only used, if script-mode is used and not empty. Include any additional Java runtime options to use when starting up Tomcat. E.g. -DXmx800m for heap size etc. (Uses JAVA_OPTS parameter of the startup script)" upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Java Runtime options</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_JAVA_OPTIONSs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Only used, if script-mode is used and not empty. Include any additional Java runtime options to use when starting up Tomcat. E.g. -DXmx800m for heap size etc. (Uses JAVA_OPTS parameter of the startup script)</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+      <row>
+         <line_number>38</line_number>
+         <name>UC4RB_TC_SERVICE_NAME#</name>
+         <reference>UC_DATATYPE_STRING</reference>
+         <reference_type>VARA</reference_type>
+         <separator>;</separator>
+         <xui><![CDATA[<text enabled="1" fill="b" focus="0" id="UC4RB_TC_SERVICE_NAMEs.00" inputassistance="0" len="" nl="1" regex="" required="0" separator=";" showaspassword="0" text="Service name" tooltip="Only used, if service-mode is used. For Windows: name of the service. For Unix: name of sour script in yur inet.d folder to call (e.g.: /etc/inetd./tomcat5)" upper="0" alt="1" multiline="0" multilineIcon="0"><oninputassistant><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptname|@id"/><command request="_internal" target="_view" targetaction="setAttribute" targetparam="promptvalue|@value"/><command owner="_promptsetcontainer" owneraction="getData" request="getpromptinputassistance" target="_chainwindow"/></oninputassistant><properties><entry listparam="C" name="reference" reftype="STATIC">UC_DATATYPE_STRING</entry><entry name="text">Service name</entry><entry name="multiselect">0</entry><entry name="separator">;</entry><entry name="len"/><entry name="quotes"/><entry name="id">UC4RB_TC_SERVICE_NAMEs.00</entry><entry name="inputassistance">0</entry><entry name="enabled">0</entry><entry name="upper">0</entry><entry name="focus">0</entry><entry name="showaspassword">0</entry><entry name="tooltip">Only used, if service-mode is used. For Windows: name of the service. For Unix: name of sour script in yur inet.d folder to call (e.g.: /etc/inetd./tomcat5)</entry><entry name="customfield"/><entry name="modifiable">1</entry><entry name="regex"/><entry name="required">0</entry><entry name="initvalue"/><entry name="xmlkey"/><entry name="xmlpath"/><entry name="multiline">0</entry><entry name="multilineIcon">0</entry><entry name="onchangereset"/><entry name="resetable">1</entry></properties></text>]]></xui>
+         <ui_type>text</ui_type>
+      </row>
+   </elements>
+</prpt>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scri>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_PROVISIONING.PUB.SCRIPT.PARSE_AGENT_INI_PROPERTIES</name>
+         <type>SCRI</type>
+         <has_object_variables>1</has_object_variables>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>Parse Agent Properties</description>
+         <versioning_id>-1168028664</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &CHECK_AGENT_NAME# = STR_STARTS_WITH(&UC4RB_PV_AGENT#,"EXT:")
+:IF &CHECK_AGENT_NAME# EQ "N"
+: IF &UC4RB_PV_AGENT# <> ""
+:   SET &UC4RB_PV_AGENT# = STR_CAT(";name=", &UC4RB_PV_AGENT#)
+: ENDIF
+:ENDIF
+
+:SET &CHECK_AE_SYSTEM# = STR_STARTS_WITH(&UC4RB_PV_AE_SYSTEM#,"EXT:")
+:IF &CHECK_AE_SYSTEM# EQ "N"
+: IF &UC4RB_PV_AE_SYSTEM# <> ""
+:   SET &UC4RB_PV_AE_SYSTEM# = "system=&UC4RB_PV_AE_SYSTEM#;")
+: ENDIF
+:ENDIF
+
+:SET &UC4RB_PV_AE_CP# = ""
+:SET &CHECK_AE_HOST# = STR_STARTS_WITH(&UC4RB_PV_AE_HOST#,"EXT:")
+:IF &CHECK_AE_HOST# EQ "N"
+: SET &CHECK_AE_PORT# = STR_STARTS_WITH(&UC4RB_PV_AE_PORT#,"EXT:")
+: IF &CHECK_AE_PORT# EQ "N"
+:   IF &UC4RB_PV_AE_HOST# <> ""
+:     IF &UC4RB_PV_AE_PORT# <> ""
+:       SET &UC4RB_PV_AE_CP# = "cp=&UC4RB_PV_AE_HOST#:&UC4RB_PV_AE_PORT#;"
+:     ENDIF
+:   ENDIF
+: ENDIF
+:ENDIF
+
+:PSET &UC4RB_PV_AGENT_RUNTIME_INI# = &UC4RB_PV_AE_SYSTEM#&UC4RB_PV_AE_CP#&UC4RB_PV_AGENT_DEFINITION_INI#&UC4RB_PV_AGENT#]]></process>
+      </row>
+   </scripts>
+   <script_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+      </row>
+   </script_attributes>
+   <object_variables>
+      <row>
+         <value>EXT:@global/AeHost</value>
+         <name>&amp;UC4RB_PV_AE_HOST#</name>
+      </row>
+      <row>
+         <value>EXT:@global/AePort</value>
+         <name>&amp;UC4RB_PV_AE_PORT#</name>
+      </row>
+      <row>
+         <value>EXT:@global/AeSystemName</value>
+         <name>&amp;UC4RB_PV_AE_SYSTEM#</name>
+      </row>
+      <row>
+         <value>EXT:/deploymenttarget/system/agent</value>
+         <name>&amp;UC4RB_PV_AGENT#</name>
+      </row>
+      <row>
+         <value>EXT:/stacktemplate/custom/agent_override_ini_properties</value>
+         <name>&amp;UC4RB_PV_AGENT_DEFINITION_INI#</name>
+      </row>
+      <row>
+         <name>&amp;UC4RB_PV_AGENT_RUNTIME_INI#</name>
+      </row>
+   </object_variables>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</scri>

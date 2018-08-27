@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <platform>GENERIC</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.JOB.ATTACH_AGENT@GENERIC</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>423652028</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:ATTACH_RES "&UC4RB_AGENT_BINARY#", "*", C
+:SWITCH &UC4RB_TARGET_OS#
+:CASE "Windows"
+:PSET &UC4RB_AGENT_ARCHIVE_NAME# = STR_LC("AGENT.zip")
+:CASE "Linux"
+:PSET &UC4RB_AGENT_ARCHIVE_NAME# = STR_LC("agent.tar.gz")
+:OTHER
+:ENDSWITCH
+:PSET &UC4RB_AGENT_ARCHIVE_PATH# = STR_CAT(&$AGENT_RESOURCES_CLIENT#, &UC4RB_AGENT_ARCHIVE_NAME#)]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <platform>GENERIC</platform>
+         <agent><![CDATA[<GENERIC>]]></agent>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

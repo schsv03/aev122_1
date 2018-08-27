@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.INCLUDE.SNAPSHOT.REGISTER_REPORT.V3</name>
+         <type>JOBI</type>
+         <versioning_id>1644040462</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.AUTOMIC_BOND.PUB.INCLUDE.ATTACH
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHANGE_DIRECTORY_TO_AGENT_BIN
+
+:IF &UC4RB_REPORT_TYPE# = "SNAPSHOTOVERVIEW"
+:  SET &UC4RB_REPORT_ID# = 0
+:ENDIF
+
+:IF &UC4RB_REPORT_TYPE# = "SNAPSHOTCOMPARE"
+:  IF &UC4RB_CONTENT_STATUS# <> ""
+:    SET &UC4RB_REPORT_STATUS# = &UC4RB_CONTENT_STATUS#
+:  ENDIF
+:ENDIF
+
+:SET &RUNID# = SYS_ACT_TOP_NR()
+:JCL_CONCAT_CHAR "?"
+java -jar "&$AGENT_RESOURCES_CLIENT#snapshot-tool.jar" snapshot.communication SnapshotReport &UC4RB_RM_USERNAME# &UC4RB_RM_PASSWORD# ?
+"&UC4RB_RM_HOST#" &UC4RB_REPORT_ID# &RUNID# ?
+&UC4RB_SNAPSHOT_GUID# &UC4RB_REPORT_TYPE# &UC4RB_REPORT_FORMAT# &UC4RB_REPORT_COMPRESSION# ?
+&UC4RB_REPORT_STATUS# "&UC4RB_XSLT_FILE_NAME#" "&UC4RB_XML_FILE_NAME#"
+:JCL_CONCAT_CHAR
+]]></process>
+      </row>
+   </scripts>
+</jobi>

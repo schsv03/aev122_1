@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<docu>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_AGENT_DEPLOYMENT.PUB.DOC</name>
+         <type>DOCU</type>
+         <description>Pack Documentation</description>
+         <versioning_id>-1566336001</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu><![CDATA[The action contained in this package deploys an agent and service manager to a windows/unix box. The action pack's intended purpose is to use it in the context of the ARA provisioning solution.
+
+=Setup=
+
+* Pre-requsites for Windows target boxes
+Supported platforms
+  Windows Server 2012 R2
+WMF 5.0 is installed on the box (https://www.microsoft.com/en-us/download/details.aspx?id=50395)
+Java 1.8 pre-installed on the box. java.exe available on the PATH for executing jobs
+Windows Remoting must be enabled on the Windows box as follows:
+  option 1: Enable PowerShell via Group Policy:
+    http://blog.powershell.no/2010/03/04/enable-and-configure-windows-powershell-remoting-using-group-policy/
+    http://windowsitpro.com/powershell/controlling-powershell-execution-policy-settings-domain
+  option 2: enable Powershell manually on each server:
+    From a command prompt, run ?winrm quickconfig? and the output should be as follows: 
+
+From a command prompt, run ?powershell? and run ?test-wsman <computer name>?. Output should be as follows if the WinRM service is running:
+
+WinRM configuration as below since we com with Authentication - Basic, UseSSL = No
+  winrm/config/client/auth '@{Basic="true"}'
+  winrm/config/client '@{AllowUnencrypted="true"}'
+  winrm set winrm/config/client '@{TrustedHosts="<your-target-box>"}'
+    example: winrm set winrm/config/client '@{TrustedHosts="box1,box2"}' or winrm set winrm/config/client '@{TrustedHosts="*"}'
+  winrm/config/service/auth '@{Basic="true"}'
+  winrm/config/service '@{AllowUnencrypted="true"}'
+A Windows domain user (i.e. automic) with Administrator privileges which will be used to install the Agent and Service Manager 
+
+* Pre-requisites for UNIX target boxes
+The following pre-requisites has to be met on the UNIX boxes, where the UNIX OS agents should be deployed to:
+Supported platforms
+  Linux 64bit, Ubuntu Server 16.04.1 LTS (= long-term support version of the Ubuntu server), CentOS, Red Hat, SuSe, Amazon Linux
+sshd server installed. Its service port (e.g 22) is reachable from the ExecutingAgent
+Service account
+  a service account must be set up on all servers that will own and run the Agent and Service Manager files (i.e. automic), and will be used to SCP the Automic files to the remote servers as well as to execute deployment-related commands remotely via SSH.
+  sudo: the service user will also need to be added to the sudoers list to perform the agent deployment related commands
+On the target hosts, where the agents should be deployed to, the following ports should be reachable from the AE-box:
+  2300 - Agent port
+  8871 - Service Manager port
+ 
+* Pre-requisites for the AE
+Automation Engine 12.x
+certain ports should be reachable
+  inbound rule: on the AE-box (where the deployed agents should be connected to) are reachable from the target hosts, where the agents are deployed:
+    2217-2220: CP ports
+    2270- 2279: WP ports
+  outbound rules: from the AE box, the WIN/UNIX target host's agent (2300) and service manager (8871) ports has to be reachable
+Automation Engine installed with a license that supports the type and number of agents to be deployed
+Package dependencies installed (see Metadata)
+HSTA-object: An agent-client assignment object (HSTA) has been created in AE and is active. The HSTA object is configured to match the upcoming agents.
+
+* Pre-requisites for Executing Agent
+an agent has to be used as the "executing" agent of the agent deployments. 
+In case WIN targets are deployed: its required to use a WIN executing agent. UNIX as executing agent is not supported for WIN target deployments
+In case UNIX targets are deployed: both WIN or UNIX as executing agent can be used
+the agent is fully configured and connected to the AE
+In case WIN agent is used:
+  Windows Remoting must be enabled on the Windows box and configured as same as Windows target boxes
+  WMF 5.0 is installed on the Windows box
+In case a UNIX agent is used:
+  the executing 
+
+=Example Input=
+Let's say User want to using a windows executing agent to rollout new agent to target box Windows x64
+
+  ---CONNECTION_HOST---
+  Target OS: Windows x64
+  Hostname: <target hostname or IP address>
+  Username: <target credential>
+  Password:  <target credential>
+  Sudo Password : <target credential> (could be empty)
+  SSH Port: 22 (default)
+  WinRM Port: 5985 (default)
+
+  ---CONNECTION_AE---
+  System Name: <Target AE System name, where new agent will be registered to, eg: AUTOMIC>
+  CP host/IP: <Target AE CP host name or it's IP address>
+  CP port: 2217 (default)
+
+  ---AGENT---
+  Install Directory: <Location in target box where you want to put Agent 's binary files> *
+  Agent Name: <new agent name>
+  Listening Port: 2300 (default)
+  License Class: V (default)
+  Host role: <Optional hostrole set on the Agent, empty by default>
+
+  ---SERVICE_MANAGER---
+  Install Directory: <Location in target box where you want to put Service Manager 's binary files> *
+  Listening Port: 8871 (default)
+  Phrase: AUTOMIC (default)
+
+*: Take a note when target box is Windows, the Install Directory must followed by 'bin' folder. E.g: C:\Automic\Automation.Platform\Agents\windows\bin & C:\Automic\Automation.Platform\ServiceManager\bin
+
+=Known Issues=
+
+=Output=
+
+Success exit code if successful, else failure exit code
+
+=Rollback=
+
+Rollback is not supported. E.g. if the agent/service manager rollout fails, there is no built-in support to restore the state before
+
+=Changelog=
+1.1.0
+	Compatible with AutomationEngine version 12.2.x
+1.0.1
+	Compatible with AutomationEngine version 12.0.x and 12.1.x
+1.0.0
+	Compatible with AutomationEngine version 12.0.x
+]]></Docu>
+      </row>
+   </documentation>
+</docu>

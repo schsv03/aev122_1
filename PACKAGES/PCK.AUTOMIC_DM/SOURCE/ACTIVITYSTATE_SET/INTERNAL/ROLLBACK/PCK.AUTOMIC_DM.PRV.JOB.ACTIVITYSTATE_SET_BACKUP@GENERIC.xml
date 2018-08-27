@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>GENERIC</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_DM.PRV.JOB.ACTIVITYSTATE_SET_BACKUP@GENERIC</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>558911925</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.AUTOMIC_DMTOOL.PUB.INCLUDE.ATTACH
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHANGE_DIRECTORY_TO_AGENT_BIN
+:SWITCH &$PLATFORM#
+:CASE "WINDOWS"
+! insert these lines in your script to determine if an error occurred
+! @set retcode=%errorlevel%
+! @if NOT %ERRORLEVEL% == 0 goto :retcode
+!
+
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_CMDLINE_CMD@WINDOWS
+:JCL_CONCAT_CHAR "?"
+java -jar &$AGENT_RESOURCES_CLIENT#dm-tool.jar rm GetActivityState -u "&UC4RB_RM_HOST#" ?
+-un "&UC4RB_RM_USERNAME#" -p "&UC4RB_RM_PASSWORD#" ?
+-a "&UC4RB_RM_ACTIVITY_ID#"
+:JCL_CONCAT_CHAR
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_CMDLINE_CMD@WINDOWS
+
+:CASE "UNIX"
+
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+:JCL_CONCAT_CHAR "?"
+java -jar &$AGENT_RESOURCES_CLIENT#dm-tool.jar rm GetActivityState -u "&UC4RB_RM_HOST#" ?
+-un "&UC4RB_RM_USERNAME#" -p "&UC4RB_RM_PASSWORD#" ?
+-a "&UC4RB_RM_ACTIVITY_ID#"
+:JCL_CONCAT_CHAR
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+
+:OTHER
+
+:ENDSWITCH
+]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+      <row>
+         <post_process><![CDATA[:SET &variablePath# = ""
+:SET &variableName# = "PCK.AUTOMIC_DM.PRV.VARA.TEMP.ACTIVITYSTATE_SET_BACKUP.&$ACTIVATOR_RUNID#"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CREATE_PASS_VALUES_VARIABLE
+
+:SET &VAR_NAME# = "RESULT: "
+:INCLUDE PCK.AUTOMIC_DM.PRV.INCLUDE.SCAN_REPORT_FOR_VALUE
+
+:IF &Result# <> ""
+:PUT_VAR &variableName#, "&BACKUPKEY#", "&Result#"
+:ENDIF]]></post_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>GENERIC</platform>
+         <agent><![CDATA[<GENERIC>]]></agent>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

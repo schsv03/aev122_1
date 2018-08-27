@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>CIT</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>2</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_RM.PUB.ACTION.GET_ENTITY</name>
+         <has_prompts>1</has_prompts>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>Get entity</description>
+         <versioning_id>235071102</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu><![CDATA[= Action name =
+PCK.AUTOMIC_RM.PUB.ACTION.GET_ENTITY
+
+= General description =
+Get information of an entity using REST API
+
+= Inputs =
+Promptset: PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY
+* Object Type             : Object Type
+Promptset PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS
+* Creation Time: Filter by creation time of the stack provider. The creation time can be either set by exact date, a.e. creation_time=2015-11-12T12:00:00Z or you can use the keyword LATEST which will return only the latest stack provider according to its creation time and other filter criteria. Sample: If you set a filter ?creation_time=LATEST the latest stack provider will be returned.
+* Name: Filter by name of the entity. Supporting wildcard (*) at the begining and at the end.
+* Folder Name: Filter by name of the folder.
+* Owner Name: Filter by name of user or usergroup.
+* Custom Type Name: Filter by name of custom type.
+* Archived: Filter by archived property (default is "false").
+
+Promptset PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ENDPOINT
+Promptset PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC
+Promptset PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY
+Promptset PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ADVANCED
+Promptset PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.OVERWRITE_RA_REST
+
+= Behavior =
+(see general description)
+
+= Outputs =
+&UC4RB_GET_OUT_VARA#                 Name of vara object contains result
+&UC4RB_GET_OUT_ENTITIES#	        All returned entities
+&UC4RB_GET_OUT_IDS#	                All returned entities' id
+
+= Return Value =
+0 - Get entities successfully.
+Other - Action finishes with error
+
+= Rollback =
+(none)
+
+= Logging =
+AE logs will be displayed in the AE report.
+
+= Example =
+(none)]]></Docu>
+      </row>
+   </documentation>
+   <scripts>
+      <row>
+         <process><![CDATA[:INC PCK.AUTOMIC_RM.PRV.INCLUDE.GET_OBJECT_TYPE
+
+:SET &START_AT_PARAM# = "start_at"
+:SET &START_AT_VALUE# = &UC4RB_GET_START#
+
+:SET &CREATION_TIME_PARAM# = "creation_time"
+:SET &CREATION_TIME_VALUE# = &UC4RB_GET_CREATION_TIME#
+:IF &CREATION_TIME_VALUE# = ""
+:  SET &CREATION_TIME_PARAM# = &START_AT_PARAM#
+:  SET &CREATION_TIME_VALUE# = &START_AT_VALUE#
+:ENDIF
+
+:SET &NAME_PARAM# = "name"
+:SET &NAME_VALUE# = &UC4RB_GET_NAME#
+:IF &NAME_VALUE# = ""
+:  SET &NAME_PARAM# = &START_AT_PARAM#
+:  SET &NAME_VALUE# = &START_AT_VALUE#
+:ENDIF
+
+:SET &FOLDER_NAME_PARAM# = "folder.name"
+:SET &FOLDER_NAME_VALUE# = &UC4RB_GET_FOLDER_NAME#
+:IF &FOLDER_NAME_VALUE# = ""
+:  SET &FOLDER_NAME_PARAM# = &START_AT_PARAM#
+:  SET &FOLDER_NAME_VALUE# = &START_AT_VALUE#
+:ENDIF
+
+:SET &OWNER_NAME_PARAM# = "owner.name"
+:SET &OWNER_NAME_VALUE# = &UC4RB_GET_OWNER_NAME#
+:IF &OWNER_NAME_VALUE# = ""
+:  SET &OWNER_NAME_PARAM# = &START_AT_PARAM#
+:  SET &OWNER_NAME_VALUE# = &START_AT_VALUE#
+:ENDIF
+
+:SET &CUSTOM_TYPE_NAME_PARAM# = "custom_type.name"
+:SET &CUSTOM_TYPE_NAME_VALUE# = &UC4RB_GET_CUSTOM_TYPE_NAME#
+:IF &CUSTOM_TYPE_NAME_VALUE# = ""
+:  SET &CUSTOM_TYPE_NAME_PARAM# = &START_AT_PARAM#
+:  SET &CUSTOM_TYPE_NAME_VALUE# = &START_AT_VALUE#
+:ENDIF
+
+:SET &ARCHIVED_PARAM# = "archived"
+:SET &ARCHIVED_VALUE# = &UC4RB_GET_ARCHIVED#
+:IF &ARCHIVED_VALUE# = ""
+:  SET &ARCHIVED_PARAM# = &START_AT_PARAM#
+:  SET &ARCHIVED_VALUE# = &START_AT_VALUE#
+:ENDIF]]></process>
+      </row>
+      <row>
+         <pre_process><![CDATA[:INC PCK.AUTOMIC_RA_REST.PUB.INCLUDE.PREPARE_RA_JOB
+:INC PCK.AUTOMIC_RA_REST.PUB.INCLUDE.SET_CONNECTION_AUTH_BASIC]]></pre_process>
+      </row>
+      <row>
+         <post_process><![CDATA[:SET &HAS_RESPONSE# = "NO"
+:SET &UC4RB_GET_OUT_VARA# = ""
+
+:SET &hnd# = PREP_PROCESS_REPORT(,,,'*Status:200 OK*')
+:PROCESS &hnd#
+:  SET &HAS_RESPONSE# = "YES"
+:ENDPROCESS
+
+:IF &HAS_RESPONSE# = "NO"
+:  SET &TOTAL_RESULTS# = 0
+:  DEFINE &UC4RB_GET_OUT_ENTITIES#,string, 1
+:  DEFINE &UC4RB_GET_OUT_IDS#, string, 1
+:  PUBLISH &UC4RB_GET_OUT_IDS#[1], "", WORKFLOW
+:ELSE
+:  IF &TOTAL_RESULTS# <> 0
+:    SET &variableName# = "PCK.AUTOMIC_RM.PRV.VARA.TEMP.&UC4RB_OBJECT_TYPE#_GET_RESULTS.&$ACTIVATOR_RUNID#.&$PHYS_DATE_YYYYMMDD#"
+:    SET &variableName# = STR_UC(&variableName#)
+:    SET &variablePath# = ""
+:    INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CREATE_PASS_VALUES_VARIABLE
+:    SET &LENGTH# = LENGTH(&UC4RB_GET_OUT_ENTITIES#[])
+:    SET &COUNT# = 1
+:    WHILE &COUNT# <= &LENGTH#
+:      PUT_VAR &variableName#, &UC4RB_GET_OUT_IDS#[&COUNT#], &UC4RB_GET_OUT_ENTITIES#[&COUNT#]
+:      SET &COUNT# = &COUNT# + 1
+:    ENDWHILE
+:    PSET &UC4RB_GET_OUT_VARA# = &variableName#
+:  ELSE
+:    DEFINE &UC4RB_GET_OUT_IDS#, string, 1
+:    PUBLISH &UC4RB_GET_OUT_IDS#[1], "", WORKFLOW
+:  ENDIF
+:ENDIF
+
+
+
+
+
+]]></post_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>CIT</platform>
+         <agent><![CDATA[<CIT>]]></agent>
+         <type>WEBSERVICEREST</type>
+         <optional_reports>PLOG</optional_reports>
+         <job_report_path>2</job_report_path>
+         <sub_type>REST</sub_type>
+      </row>
+   </job_attributes>
+   <extended_values>
+      <row>
+         <type>2</type>
+         <name>componentName</name>
+         <value>WebServiceRest</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>runType</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_aws_accesskey</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_aws_secret_accesskey</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_aws_sign_version</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_basic_host</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_basic_password</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_basic_port</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_basic_preemptive</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_basic_realm</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_basic_username</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_method</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_clientkey</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_clientsecret</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_refresh_token</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_refresh_uri</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_signature_type</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_token</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_token_secret</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_verifier</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_auth_oauth_version_method</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_connection_timeout</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_endpoint_url</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_follow_redirects</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_from_prompts</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_auth_method</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_host</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_password</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_port</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_realm</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_type</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_proxy_username</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>conn_read_timeout</name>
+         <value>REST</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>connectTimeout</name>
+         <value>30</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>curl</name>
+         <value>30</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>file</name>
+         <value>30</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>isCurl</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>jobHeaders</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>jobQuery</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>method</name>
+         <value>GET</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>multiPart</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>multiPartResp</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_0_0</name>
+         <value>start_at</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_0_1</name>
+         <value>&amp;UC4RB_GET_START#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_1_0</name>
+         <value>max_results</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_1_1</name>
+         <value>&amp;UC4RB_GET_MAX#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_2_0</name>
+         <value>&amp;CREATION_TIME_PARAM#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_2_1</name>
+         <value>&amp;CREATION_TIME_VALUE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_3_0</name>
+         <value>&amp;NAME_PARAM#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_3_1</name>
+         <value>&amp;NAME_VALUE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_4_0</name>
+         <value>&amp;FOLDER_NAME_PARAM#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_4_1</name>
+         <value>&amp;FOLDER_NAME_VALUE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_5_0</name>
+         <value>&amp;OWNER_NAME_PARAM#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_5_1</name>
+         <value>&amp;OWNER_NAME_VALUE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_6_0</name>
+         <value>&amp;CUSTOM_TYPE_NAME_PARAM#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_6_1</name>
+         <value>&amp;CUSTOM_TYPE_NAME_VALUE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_7_0</name>
+         <value>&amp;ARCHIVED_PARAM#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>query_7_1</name>
+         <value>&amp;ARCHIVED_VALUE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>requestReports</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>resource</name>
+         <value>&amp;UC4RB_OUT_OBJECT_TYPE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_file</name>
+         <value>&amp;UC4RB_OUT_OBJECT_TYPE#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_0_code_0</name>
+         <value>$.data</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_0_queryType</name>
+         <value>JSONPath</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_0_resourceName</name>
+         <value>&amp;UC4RB_GET_OUT_ENTITIES#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_0_saveTo</name>
+         <value>variable</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_0_useArray</name>
+         <value>true</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_1_code_0</name>
+         <value>$.data[?(@.id)].id</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_1_queryType</name>
+         <value>JSONPath</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_1_resourceName</name>
+         <value>&amp;UC4RB_GET_OUT_IDS#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_1_saveTo</name>
+         <value>variable</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_1_useArray</name>
+         <value>true</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_2_code_0</name>
+         <value>$.total</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_2_queryType</name>
+         <value>JSONPath</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_2_resourceName</name>
+         <value>&amp;TOTAL_RESULTS#</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_2_saveTo</name>
+         <value>variable</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>response_part_0_script_2_useArray</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>responseReport</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>responseTimeout</name>
+         <value>60</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>responseToJobLog</name>
+         <value>true</value>
+      </row>
+      <row>
+         <is_connection>1</is_connection>
+         <type>2</type>
+         <name>restConnection</name>
+         <value>true</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>tracePerformance</name>
+         <value>false</value>
+      </row>
+      <row>
+         <type>2</type>
+         <name>uriOverride</name>
+         <value>false</value>
+      </row>
+   </extended_values>
+   <prompt_set_list>
+      <row>
+         <line_number>1</line_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.OBJECT_TYPE</prompt_set>
+         <display_order>1</display_order>
+      </row>
+      <row>
+         <line_number>2</line_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <display_order>2</display_order>
+      </row>
+      <row>
+         <line_number>3</line_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.ENTITY_PAGING</prompt_set>
+         <display_order>3</display_order>
+      </row>
+      <row>
+         <line_number>4</line_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ENDPOINT</prompt_set>
+         <display_order>4</display_order>
+      </row>
+      <row>
+         <line_number>5</line_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <display_order>5</display_order>
+      </row>
+      <row>
+         <line_number>6</line_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <display_order>6</display_order>
+      </row>
+      <row>
+         <line_number>7</line_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ADVANCED</prompt_set>
+         <display_order>7</display_order>
+      </row>
+      <row>
+         <line_number>8</line_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.OVERWRITE_RA_AGENT</prompt_set>
+         <display_order>8</display_order>
+      </row>
+   </prompt_set_list>
+   <prompt_set_defaults>
+      <row>
+         <prompt_set_element_number>1</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.OBJECT_TYPE</prompt_set>
+         <variable_name>UC4RB_OBJECT_TYPE#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>2</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <variable_name>UC4RB_GET_CREATION_TIME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>2</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <variable_name>UC4RB_GET_NAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>2</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <variable_name>UC4RB_GET_FOLDER_NAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>2</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <variable_name>UC4RB_GET_OWNER_NAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>2</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <variable_name>UC4RB_GET_CUSTOM_TYPE_NAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>2</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.GET_ENTITY.QUERY_PARAMETERS</prompt_set>
+         <variable_name>UC4RB_GET_ARCHIVED#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>3</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.ENTITY_PAGING</prompt_set>
+         <value>0</value>
+         <variable_name>UC4RB_GET_START#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>3</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RM.PRV.PROMPTSET.ENTITY_PAGING</prompt_set>
+         <value>20</value>
+         <variable_name>UC4RB_GET_MAX#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>4</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ENDPOINT</prompt_set>
+         <variable_name>CONN_ENDPOINT_URL#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>5</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <variable_name>CONN_AUTH_BASIC_USERNAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>5</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <value>--10</value>
+         <variable_name>CONN_AUTH_BASIC_PASSWORD#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>5</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <variable_name>CONN_AUTH_BASIC_HOST#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>5</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <value>0</value>
+         <variable_name>CONN_AUTH_BASIC_PORT#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>5</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <variable_name>CONN_AUTH_BASIC_REALM#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>5</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_AUTH_BASIC</prompt_set>
+         <value>YES</value>
+         <variable_name>CONN_AUTH_BASIC_PREEMPTIVE#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <value>None</value>
+         <variable_name>CONN_PROXY_TYPE#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <variable_name>CONN_PROXY_HOST#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <value>0</value>
+         <variable_name>CONN_PROXY_PORT#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <variable_name>CONN_PROXY_USERNAME#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <value>--10</value>
+         <variable_name>CONN_PROXY_PASSWORD#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <variable_name>CONN_PROXY_REALM#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>6</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_PROXY</prompt_set>
+         <value>None</value>
+         <variable_name>CONN_PROXY_AUTH_METHOD#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>7</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ADVANCED</prompt_set>
+         <value>30</value>
+         <variable_name>CONN_CONNECTION_TIMEOUT#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>7</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ADVANCED</prompt_set>
+         <value>60</value>
+         <variable_name>CONN_READ_TIMEOUT#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>7</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.CONNECTION_ADVANCED</prompt_set>
+         <value>NO</value>
+         <variable_name>CONN_FOLLOW_REDIRECTS#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>8</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_RA_REST.PUB.PROMPTSET.OVERWRITE_RA_AGENT</prompt_set>
+         <variable_name>OVERWRITE_RA_AGENT_PROMPT#</variable_name>
+      </row>
+   </prompt_set_defaults>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

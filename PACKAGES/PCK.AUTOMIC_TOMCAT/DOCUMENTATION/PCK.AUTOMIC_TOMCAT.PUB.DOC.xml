@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<docu>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_TOMCAT.PUB.DOC</name>
+         <type>DOCU</type>
+         <versioning_id>1696091898</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu><![CDATA[Manage your application deployments to a Tomcat application server using these actions
+
+=Supported versions=
+
+See http://docs.automic.com/compatibility?len=Package.Tomcat&comp=PCK.AUTOMIC_TOMCAT&version=1.0.0
+
+=Setup=
+
+* Some of the actions (deployment, application startup/shutdown/...) make use of the manager interface of Tomcat. Create a manager-user with the role manager-script in your installation. See http://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html#Configuring_Manager_Application_Access for additional details
+
+=Rollback=
+
+The Tomcat actions support rollback. The rollbacks are implemented as follows:
+ 
+* DEPLOY_APPLICATION: the rollback restores the original state before executing the DEPLOY_APPLICATION. If the application was already there before executing the forward function, the application is not touched by the rollback. If the application was not there, the application will be undeployed during the rollback.
+
+* DROP_DATASOURCE: the rollback restores the original state before executing the DROP_DATASOURCE. If the datasource was already there before executing the forward function, the datasource is not touched by the rollback. If the datasource was not there, the datasource will be removed during the rollback.
+
+* LIST_APPLICATIONS: this action does not need rollback, since it does not change the system state.
+
+* LIST_JNDI_RESOURCES: this action does not need rollback, since it does not change the system state.
+
+* RELOAD_APPLICATION: this action does not need rollback, since it does not change the system state.
+
+* RESTART_SERVER: this action does not need rollback, since it does not change the system state.
+
+* START_APPLICATION: the rollback restores the original state before executing the START_APPLICATION function. If the application was already running, it will run after the rollback. If the application was stopped before the roll forward function, it will be stopped again after the rollback.
+
+* START_SERVER: the rollback restores the original state before executing the START_SERVER function. If the server was already running, it will run after the rollback. If the server was stopped before the roll forward function, it will be stopped again after the rollback.
+
+* STOP_APPLICATION: the rollback restores the original state before executing the STOP_APPLICATION function. If the application was already running, it will run after the rollback. If the application was stopped before the roll forward function, it will be stopped again after the rollback.
+
+* STOP_SERVER: the rollback restores the original state before executing the STOP_SERVER function. If the server was already running, it will run after the rollback. If the server was stopped before the roll forward function, it will be stopped again after the rollback.
+
+* UNDEPLOY_APPLICATION: the rollback restores the original state before executing the UNDEPLOY_APPLICATION function. For this reason, the application is backed up before executing the undeploy function. In case a rollback is necessary, the application is restored from the backup automatically.
+]]></Docu>
+      </row>
+   </documentation>
+</docu>

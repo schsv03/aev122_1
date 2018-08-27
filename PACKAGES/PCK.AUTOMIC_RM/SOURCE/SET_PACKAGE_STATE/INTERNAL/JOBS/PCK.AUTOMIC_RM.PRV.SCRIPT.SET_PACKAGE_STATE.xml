@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scri>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_RM.PRV.SCRIPT.SET_PACKAGE_STATE</name>
+         <type>SCRI</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>Create Json data</description>
+         <versioning_id>117481090</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INC PCK.AUTOMIC_RM.PRV.INCLUDE.BUILD_JSON_BODY_BEGINNING
+:SET &REQUEST_BODY# = STR_CAT(&REQUEST_BODY#, """status"": ""&UC4RB_PKG_NEW_STATE#""")
+:INC PCK.AUTOMIC_RM.PRV.INCLUDE.BUILD_JSON_BODY_ENDING
+:PSET &UC4RB_PROPERTY_STATE# = &REQUEST_BODY#]]></process>
+      </row>
+   </scripts>
+   <script_attributes>
+      <row>
+      </row>
+   </script_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</scri>

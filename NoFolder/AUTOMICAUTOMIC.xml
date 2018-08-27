@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>AUTOMIC/AUTOMIC</name>
+         <type>USER</type>
+         <versioning_id>-162858683</versioning_id>
+      </row>
+   </general_attributes>
+   <user_attributes>
+      <row>
+         <is_active>1</is_active>
+         <eh_refresh_interval>90</eh_refresh_interval>
+         <last_session>2018-08-27 11:10:16.0</last_session>
+         <privilege>17591917475327</privilege>
+      </row>
+   </user_attributes>
+   <authorizations>
+      <row>
+         <auth_group>1</auth_group>
+         <bitcode>511</bitcode>
+         <filter_object_type>*</filter_object_type>
+         <filter_object_name>*</filter_object_name>
+         <filter_agent_name1>*</filter_agent_name1>
+         <filter_agent_name2>*</filter_agent_name2>
+         <filter_user_id1>*</filter_user_id1>
+         <filter_user_id2>*</filter_user_id2>
+         <filter_file_names1>*</filter_file_names1>
+         <filter_file_names2>*</filter_file_names2>
+         <line_number>1</line_number>
+      </row>
+   </authorizations>
+</user>

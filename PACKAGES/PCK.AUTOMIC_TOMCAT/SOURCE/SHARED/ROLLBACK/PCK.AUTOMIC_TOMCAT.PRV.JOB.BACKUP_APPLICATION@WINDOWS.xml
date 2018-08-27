@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>WINDOWS</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.JOB.BACKUP_APPLICATION@WINDOWS</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>-55581011</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.ITPA_SHARED.PUB.INCLUDE.POWERSHELL_UTILITY
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHANGE_DIRECTORY_TO_AGENT_BIN
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_POWERSHELL_CMD@WINDOWS
+
+:SET &UC4RB_CONVERTED_STRING# = &UC4RB_TC_HOME_DIR#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_WINDOWS_STYLE
+:SET &UC4RB_TC_HOME_DIR# = &UC4RB_CONVERTED_STRING#
+
+! Create backup directory
+:SET &DIRECTORY# = &UC4RB_BACKUP_DIRECTORY#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.ENSURE_DIRECTORY_EXISTS_POWERSHELL@WINDOWS
+
+:SET &LENGTH# = STR_LENGTH(&UC4RB_TC_CONTEXT_PATH#)
+:SET &BEGIN_CHAR# = STR_CUT(&UC4RB_TC_CONTEXT_PATH#, 1, 1)
+
+:IF &BEGIN_CHAR# = "/"
+:  SET &LENGTH# = &LENGTH# -1
+:  SET &UC4RB_TC_CONTEXT_NAME# = STR_CUT(&UC4RB_TC_CONTEXT_PATH#, 2, &LENGTH#)
+:ELSE
+:  SET &UC4RB_TC_CONTEXT_NAME# = &UC4RB_TC_CONTEXT_PATH#
+:ENDIF
+
+Function backup_application ($path) {
+
+  if (Test-Path -path "$path") {
+    Write-Host "Copy '$path' to '&UC4RB_BACKUP_DIRECTORY#'."
+    Write-Output "ISEXIST:YES" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII" -Append
+    Copy-Item "$path" "&UC4RB_BACKUP_DIRECTORY#" -Force -Recurse
+  } else {
+    Write-Host "'$path' does not exist."
+    Write-Output "ISEXIST:NO" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII" -Append
+  }
+}
+
+$server_xml = "&UC4RB_TC_HOME_DIR#\conf\server.xml"
+$app_path = "&UC4RB_TC_HOME_DIR#\&UC4RB_TC_APPBASE#\&UC4RB_TC_CONTEXT_NAME#"
+if (!(Test-Path -path "$app_path")) {
+  $app_path = "$app_path" + ".war"
+}
+
+! Get Application name
+Write-Output "APPNAME:&UC4RB_TC_CONTEXT_NAME#" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII"
+
+! Check config file exist
+if (Test-Path -path "$server_xml") {
+! Get watchDir from server.xml file
+  $watchDir = (Select-Xml -path "$server_xml" -xpath "/Server/Service/Engine/Host/Cluster/Deployer[@watchEnabled='true']/@watchDir").Node."#text"
+  if (!$watchDir) {
+    Write-Host "Server assumes not cluster deployment or watchDir is not specified."
+    Write-Output "ISFARM:NO" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII" -Append
+    backup_application $app_path
+  } else {
+    Write-Host "Server is cluster deployment."
+    $path="$watchDir\&UC4RB_TC_CONTEXT_NAME#.war"
+! Check war file exist in watchDir
+    if (Test-Path -path "$path") {
+      Write-Host "Application found in '$watchDir'."
+      Write-Output "ISFARM:YES" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII" -Append
+      backup_application $path
+    } else {
+      Write-Host "Application not found in '$watchDir'."
+      Write-Output "ISFARM:NO" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII" -Append
+      backup_application $app_path
+    }
+  }
+} else {
+  Write-Host "'$server_xml' did not exist."
+  Write-Host "Server assumes not cluster deployment."
+  Write-Output "ISFARM:NO" | Out-File "&UC4RB_BACKUP_REPORT#" -Encoding "ASCII" -Append
+  backup_application $app_path
+}]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>WINDOWS</platform>
+         <agent><![CDATA[<WIN>]]></agent>
+         <job_report_path>2</job_report_path>
+         <win_work_dir>c:\</win_work_dir>
+         <win_typ>2</win_typ>
+         <win_view>0</win_view>
+         <win_logon_as_batch>0</win_logon_as_batch>
+         <win_show_at_desktop>0</win_show_at_desktop>
+         <win_report_by_script>0</win_report_by_script>
+         <job_object>1</job_object>
+         <win_cmd></win_cmd>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

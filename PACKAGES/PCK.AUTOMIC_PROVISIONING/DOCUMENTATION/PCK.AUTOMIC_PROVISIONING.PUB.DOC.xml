@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<docu>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_PROVISIONING.PUB.DOC</name>
+         <type>DOCU</type>
+         <versioning_id>1890746801</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu><![CDATA[This pack is a pre-requisite of using the ARA provisioning feature.
+It has to be installed prior utilising this feature in ARA. 
+The pack contains a registry container (a VARA object) as well as hooks to wrap provisioning/de-provisioning workflows of provider-specific implementations (e.g. for Docker, VMware etc..).
+Note, that these objects are moved into PACKAGES/APPDATA/PCK.AUTOMIC_PROVISIONING upon installation of the pack.
+See those objects for further details.]]></Docu>
+      </row>
+   </documentation>
+</docu>

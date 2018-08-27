@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dash>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>DASH.HOME.DEFAULT</name>
+         <type>DASH</type>
+         <description>Release Automation</description>
+         <versioning_id>-1532182863</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <DASH>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8ZGFzaGJvYXJkIGNvbHM9IjYiIHJvd3M9IjYiPgogICAgPHdpZGdldHM+CiAgICAgICAgPGVudHJ5PgogICAgICAgICAgICA8d2lkZ2V0IGlkPSJ3aWRnZXRzLmdldHRpbmdzdGFydGVkIj4mbHQ7UXVpY2tMaW5rc1dpZGdldENvbmZpZ3VyYXRpb24vJmd0Ozwvd2lkZ2V0PgogICAgICAgICAgICA8Z2VvbWV0cnkgaGVpZ2h0PSI2IiB3aWR0aD0iMiIgeD0iMCIgeT0iMCIvPgogICAgICAgIDwvZW50cnk+CiAgICAgICAgPGVudHJ5PgogICAgICAgICAgICA8d2lkZ2V0IGlkPSJ3aWRnZXRzLnF1aWNrbGlua3MiPiZsdDtRdWlja0xpbmtzV2lkZ2V0Q29uZmlndXJhdGlvbi8mZ3Q7PC93aWRnZXQ+CiAgICAgICAgICAgIDxnZW9tZXRyeSBoZWlnaHQ9IjIiIHdpZHRoPSIyIiB4PSIyIiB5PSIwIi8+CiAgICAgICAgPC9lbnRyeT4KICAgICAgICA8ZW50cnk+CiAgICAgICAgICAgIDx3aWRnZXQgaWQ9IndpZGdldHMucG9zdGNoZWNrbGlzdCI+Jmx0O1Bvc3RDaGVja2xpc3RXaWRnZXRDb25maWd1cmF0aW9uJmd0OyZsdDtkZXNjcmlwdGlvbiZndDtUaGVyZSBpcyBub3RoaW5nIHRvIGNvbmZpZ3VyZSBmb3IgdGhpcyB3aWRnZXQuJmx0Oy9kZXNjcmlwdGlvbiZndDsmbHQ7L1Bvc3RDaGVja2xpc3RXaWRnZXRDb25maWd1cmF0aW9uJmd0Ozwvd2lkZ2V0PgogICAgICAgICAgICA8Z2VvbWV0cnkgaGVpZ2h0PSI2IiB3aWR0aD0iMiIgeD0iNCIgeT0iMCIvPgogICAgICAgIDwvZW50cnk+CiAgICAgICAgPGVudHJ5PgogICAgICAgICAgICA8d2lkZ2V0IGlkPSJ3aWRnZXRzLm92ZXJhbGxzeXN0ZW1zdGF0dXMiPiZsdDtPdmVyYWxsU3lzdGVtU3RhdHVzV2lkZ2V0Q29uZmlndXJhdGlvbiZndDsmbHQ7dGltZVNwYW5JbkhvdXJzJmd0OzcyJmx0Oy90aW1lU3BhbkluSG91cnMmZ3Q7Jmx0O2Rlc2NyaXB0aW9uJmd0O1RoZSBTeXN0ZW0gU3RhdHVzIFdpZGdldCBkaXNwbGF5cyBrZXkgZmlndXJlcyBvZiB0aGUgY3VycmVudCBzeXN0ZW0uJmx0Oy9kZXNjcmlwdGlvbiZndDsmbHQ7L092ZXJhbGxTeXN0ZW1TdGF0dXNXaWRnZXRDb25maWd1cmF0aW9uJmd0Ozwvd2lkZ2V0PgogICAgICAgICAgICA8Z2VvbWV0cnkgaGVpZ2h0PSIzIiB3aWR0aD0iMiIgeD0iMiIgeT0iMiIvPgogICAgICAgIDwvZW50cnk+CiAgICA8L3dpZGdldHM+CiAgICA8Y29uZmlndXJhdGlvbnMvPgo8L2Rhc2hib2FyZD4K</DASH>
+      </row>
+   </documentation>
+</dash>

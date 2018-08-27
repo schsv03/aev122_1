@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <platform>GENERIC</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_BOND.PRV.JOB.GET_ARTIFACT.START_DOWNLOAD@GENERIC</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>Create and lock artifact folder on target</description>
+         <versioning_id>2021161861</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ECHO_ON_OFF
+
+!-------------------------------------Logging input parameters-------------------------------------------------------------------------------------------------
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.HEADER.PARAM_VALIDATION
+: SET &UC4RB_LOGGING_PARAMETER# = "Artifact ID"
+: SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_ARTIFACT_ID#"
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+: SET &UC4RB_LOGGING_PARAMETER# = "Artifact Base Dir"
+: SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_ARTIFACT_BASE_DIR#"
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+: SET &UC4RB_LOGGING_PARAMETER# = "Run ID"
+: SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_RUN_ID#"
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+: SET &UC4RB_LOGGING_PARAMETER# = "Download Timeout"
+: SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_DOWNLOAD_TIMEOUT#"
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+: SET &UC4RB_LOGGING_PARAMETER# = "Force Download"
+: SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_FORCE_DOWNLOAD#"
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+: SET &UC4RB_LOGGING_PARAMETER# = "Max Number of Artifacts"
+: SET &UC4RB_LOGGING_PARAMETER_VAL# = "&UC4RB_MAX_ARTIFACTS#"
+: INC PCK.ITPA_SHARED.PRV.INCLUDE.LOGGING.PARAM
+
+!------------------------------------------ Buidling java arguments --------------------------------------------------------------------------------------------
+! Building output file path
+
+! Action name
+: SET &UC4RB_ACTION_NAME# = "StartDownloadAction"
+
+! Define java options and values
+: DEFINE &UC4RB_OPTIONS#, string, 14
+
+: SET &UC4RB_OPTIONS#[1] = "-action"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_ACTION_NAME#"
+: SET &UC4RB_OPTIONS#[2] = "&UC4RB_OPTION_VALUE#"
+
+: SET &UC4RB_OPTIONS#[3] = "-artifactid"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_ARTIFACT_ID#"
+: SET &UC4RB_OPTIONS#[4] = "&UC4RB_OPTION_VALUE#"
+
+: SET &UC4RB_OPTIONS#[5] = "-base"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_ARTIFACT_BASE_DIR#"
+: SET &UC4RB_OPTIONS#[6] = "&UC4RB_OPTION_VALUE#"
+
+: SET &UC4RB_OPTIONS#[7] = "-runid"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_RUN_ID#"
+: SET &UC4RB_OPTIONS#[8] = "&UC4RB_OPTION_VALUE#"
+
+: SET &UC4RB_OPTIONS#[9] = "-timeout"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_DOWNLOAD_TIMEOUT#"
+: SET &UC4RB_OPTIONS#[10] = "&UC4RB_OPTION_VALUE#"
+
+: SET &UC4RB_OPTIONS#[11] = "-force"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_FORCE_DOWNLOAD#"
+: SET &UC4RB_OPTIONS#[12] = "&UC4RB_OPTION_VALUE#"
+
+: SET &UC4RB_OPTIONS#[13] = "-maxartifacts"
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.ESCAPE_ARG_VALUE "TEMP_OPTION_VALUE"="&UC4RB_MAX_ARTIFACTS#"
+: SET &UC4RB_OPTIONS#[14] = "&UC4RB_OPTION_VALUE#"
+
+! Build java arguments
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.BUILD_JAVA_ARGUMENTS
+
+! Setting execution environment
+: INC PCK.AUTOMIC_BOND.PUB.INCLUDE.GET_ARTIFACT.SET_EXEC_ENVIRONMENT
+
+! Invoking java binary
+java -jar &UC4RB_PATH_JAR# &UC4RB_JAVA_ARGUMENTS#
+
+! Status messages
+:SET &UC4RB_LOGGING_INFO# = "******** START DOWNLOAD ACTION EXECUTED SUCCESSFULLY ********"
+:SET &UC4RB_LOGGING_ERROR# = "******** START DOWNLOAD ACTION FAILED ********"
+
+!------------------------------------------ Error Handling -----------------------------------------------------------------------------------------------------
+
+:INC PCK.AUTOMIC_BOND.PUB.INCLUDE.CHECK_JOBSTATUS]]></process>
+      </row>
+      <row>
+         <pre_process><![CDATA[:INCLUDE PCK.ITPA_SHARED.PUB.INCLUDE.START_STOP_JOB_ACCORDING_TO_AGENT_OS
+
+:PRINT Validate Artifact's Base Dir
+:PSET &UC4RB_ARTIFACT_BASE_DIR# = STR_TRIM(&UC4RB_ARTIFACT_BASE_DIR#)
+:IF &UC4RB_ARTIFACT_BASE_DIR# <> ""
+:  SET &MISSING_ARTIFACT# = STR_STARTS_WITH(&UC4RB_ARTIFACT_ID#, "EXT:")
+:ELSE
+:  SET &MISSING_ARTIFACT# = "Y"
+:ENDIF
+
+:IF &MISSING_ARTIFACT# = "Y"
+:  PRINT "UC4RB_ARTIFACT_BASE_DIR was not specified, use default location"
+:  SET &CLIENT# = SYS_ACT_CLIENT()
+:  PSET &UC4RB_ARTIFACT_BASE_DIR# = STR_CAT("../temp/ara/", &CLIENT#)
+:ENDIF
+:PRINT Start download Artifact to folder '&UC4RB_ARTIFACT_BASE_DIR#']]></pre_process>
+      </row>
+      <row>
+         <post_process><![CDATA[!Publish the artifact location
+:SET &STATUS# = GET_UC_OBJECT_STATUS(,,"RETCODE")
+
+:IF &STATUS# EQ 0
+:SET &HND# = PREP_PROCESS_REPORT("JOBS",, "REP",,"COL=DELIMITER", 'DELIMITER=*::=*')
+:PROCESS &HND#
+:   SET &KEY# = GET_PROCESS_LINE(&HND#,1)
+:   SET &VALUE# = GET_PROCESS_LINE(&HND#,2)
+: IF &KEY# <> ""
+:   IF &VALUE# <> ""
+:      IF &KEY# = "UC4RB_ARTIFACT_DIR"
+:         PSET &UC4RB_ARTIFACT_DIR# = "&VALUE#"
+:      ENDIF
+:      IF &KEY# = "UC4RB_ARTIFACT_READY"
+:         PSET &UC4RB_ARTIFACT_READY# = "&VALUE#"
+:         PSET &UC4RB_DOWNLOAD_SUCCESS# = "&VALUE#"
+:      ENDIF
+:   ENDIF
+: ENDIF
+:ENDPROCESS
+:CLOSE_PROCESS &HND#
+:ELSE
+:  PSET &UC4RB_ARTIFACT_DIR# = ""
+:  PSET &UC4RB_ARTIFACT_READY# = "NO"
+:  PSET &UC4RB_DOWNLOAD_SUCCESS# = "NO"
+:ENDIF]]></post_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <attribute_dialog>1</attribute_dialog>
+         <platform>GENERIC</platform>
+         <agent><![CDATA[<GENERIC>]]></agent>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

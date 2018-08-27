@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scri>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.SCRI.GET_INI_MAPPING</name>
+         <type>SCRI</type>
+         <has_object_variables>1</has_object_variables>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>-526416645</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &UC4RB_RESULT_MAPPING_OUTPUT# = ""
+:SET &UC4RB_AGENT_NAME# = ""
+!Parse config string
+:SET &UC4RB_STRING_SEPARATOR# = ";"
+:IF &UC4RB_CONFIG_STRING# <> ""
+:  DEFINE &CONFIG_ARRAY#, string, 100
+:  FILL &CONFIG_ARRAY#[] = STR_SPLIT(&UC4RB_CONFIG_STRING#, &UC4RB_STRING_SEPARATOR#)
+:  SET &CONFIG_ARRAY_LEN# = LENGTH(&CONFIG_ARRAY#[],SIZE)
+:ELSE
+:  SET &CONFIG_ARRAY_LEN# = 0
+:ENDIF
+
+!Loop through config array
+:SET &VAR# = 1
+:WHILE &VAR# LE &CONFIG_ARRAY_LEN#
+!  Now get key and value
+:  IF &CONFIG_ARRAY#[&VAR#] <> ""
+:    SET &EQUAL_MARK_POS#=STR_FIND(&CONFIG_ARRAY#[&VAR#],"=")
+:    IF &EQUAL_MARK_POS# <> "0"
+:      SET &FIRST_CUT_POS# = SUB(&EQUAL_MARK_POS#, 1);
+:      SET &SECOND_CUT_POS# = ADD(&EQUAL_MARK_POS#, 1);
+:      SET &LEN# = STR_LNG(&CONFIG_ARRAY#[&VAR#])
+
+:      SET &KEY# = STR_CUT(&CONFIG_ARRAY#[&VAR#], 1, &FIRST_CUT_POS#)
+:      SET &KEY# = STR_TRIM(&KEY#)
+:      SET &VALUE# = STR_CUT(&CONFIG_ARRAY#[&VAR#], &SECOND_CUT_POS#, &LEN#)
+:      SET &VALUE# = STR_RTRIM(&VALUE#)
+!      Get Section by TargetOS & Ini Type
+:      DEFINE &SECTION#, string
+:      IF &UC4RB_IS_AGENT# = "YES"
+:        IF &UC4RB_TARGET_OS# = "Windows"
+:          SET &SECTION# = GET_VAR("PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.VARA.AGENT_INI_SECTION_MAPPING@WINDOWS", &KEY#, 1)
+:        ELSE
+:          SET &SECTION# = GET_VAR("PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.VARA.AGENT_INI_SECTION_MAPPING@UNIX", &KEY#, 1)
+:        ENDIF
+!        Publish some importance variable
+!        Agent's Name
+:        IF &KEY# = "name"
+:          SET &UC4RB_AGENT_NAME# = &VALUE#
+:        ENDIF
+:      ELSE
+:        IF &UC4RB_TARGET_OS# = "Windows"
+:          SET &SECTION# = GET_VAR("PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.VARA.SM_INI_SECTION_MAPPING@WINDOWS", &KEY#, 1)
+:        ELSE
+:          SET &SECTION# = GET_VAR("PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.VARA.SM_INI_SECTION_MAPPING@UNIX", &KEY#, 1)
+:        ENDIF
+:      ENDIF
+:      SET &UC4RB_RESULT_MAPPING_OUTPUT# = STR_CAT(&UC4RB_RESULT_MAPPING_OUTPUT#, "&SECTION#|&KEY#|&VALUE#")
+:      SET &VAR# = &VAR# + 1
+:      IF &VAR# LE &CONFIG_ARRAY_LEN#
+:      SET &UC4RB_RESULT_MAPPING_OUTPUT# = STR_CAT(&UC4RB_RESULT_MAPPING_OUTPUT#, ",")
+:      ENDIF
+:    ELSE
+:     IF &UC4RB_IS_AGENT# = "YES"
+:       STOP MSG, 50, "Invalid syntax for Agent's INI props string. Couldn't find ""="" symbol in setting ""&CONFIG_ARRAY#[&VAR#]"". Your INI props string is ""&UC4RB_CONFIG_STRING#"""
+:     ELSE
+:       STOP MSG, 50, "Invalid syntax for Service Manager's INI props string. Couldn't find ""="" symbol in setting ""&CONFIG_ARRAY#[&VAR#]"". Your INI props string is ""&UC4RB_CONFIG_STRING#"""
+:     ENDIF
+:    ENDIF
+:  ELSE
+:    SET &VAR# = &VAR# + 1
+:  ENDIF
+:ENDWHILE
+
+:PSET &UC4RB_RESULT_MAPPING_OUTPUT# = "&UC4RB_RESULT_MAPPING_OUTPUT#"
+:PSET &UC4RB_AGENT_NAME# = "&UC4RB_AGENT_NAME#"]]></process>
+      </row>
+   </scripts>
+   <script_attributes>
+      <row>
+      </row>
+   </script_attributes>
+   <object_variables>
+      <row>
+         <name>&amp;UC4RB_CONFIG_STRING#</name>
+      </row>
+      <row>
+         <value>YES</value>
+         <name>&amp;UC4RB_IS_AGENT#</name>
+      </row>
+   </object_variables>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</scri>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>UNIX</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.JOB.CREATE_DATASOURCE@UNIX</name>
+         <type>JOBS</type>
+         <has_object_variables>1</has_object_variables>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>-1485875485</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.AUTOMIC_TOMCAT.PRV.INCLUDE.ATTACH
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHANGE_DIRECTORY_TO_AGENT_BIN
+
+:SET &UC4RB_CONVERTED_STRING# = &UC4RB_TC_HOME_DIR#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_UNIX_STYLE
+:SET &UC4RB_TC_HOME_DIR# = &UC4RB_CONVERTED_STRING#
+
+!-------------------- Create Resource in server.xml --------------------------
+echo "Check if server.xml exist in &UC4RB_TC_HOME_DIR#/conf"
+java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML ValidateDocument -xml "&UC4RB_TC_HOME_DIR#/conf/server.xml"
+RC=$?
+if [ "$RC" -gt "1" ] ;
+  then
+    exit $RC;
+fi
+
+resource=$(java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML ExecutePath -xml "&UC4RB_TC_HOME_DIR#/conf/server.xml" -x '//Server/GlobalNamingResources/Resource[@name="&UC4RB_TC_DS_NAME#"]' -filter all | grep "Return code: 0")
+
+if [ -n "$resource" ] ; then
+
+   echo "Resource &UC4RB_TC_DS_NAME# exists"
+:  IF &UC4RB_TC_FAIL_IF_EXISTS# = "YES"
+         exit 1
+:  ELSE
+         exit 0
+:  ENDIF
+
+else
+
+  echo 'Resource &UC4RB_TC_DS_NAME# does not exist'
+  echo 'Adding resource:'
+  echo '&RESOURCE_ELEMENT#'
+
+  java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" tomcat CreateDatasource "&UC4RB_TC_HOME_DIR#/conf/server.xml" "//Server/GlobalNamingResources" '&RESOURCE_ELEMENT#' &UC4RB_TC_DS_PWD#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+
+!  -------------------- Check if resource is created --------------------------
+  echo "Check if resource &UC4RB_TC_DS_NAME# created"
+  resource=$(java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML ExecutePath -xml "&UC4RB_TC_HOME_DIR#/conf/server.xml" -x '//Server/GlobalNamingResources/Resource[@name="&UC4RB_TC_DS_NAME#"]' -filter all | grep "Return code: 0")
+
+  if [ -n "$resource" ] ; then
+    echo "Resource &UC4RB_TC_DS_NAME# created"
+  else
+    echo "Resource &UC4RB_TC_DS_NAME# is not created. Job fail"
+    exit 2
+  fi
+fi
+
+!-------------------- Create Resource Link in context.xml --------------------------
+:IF &UC4RB_TC_RES_LINKS# = "YES"
+
+echo "Check if context.xml exist in &UC4RB_TC_HOME_DIR#/conf"
+java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML ValidateDocument -xml "&UC4RB_TC_HOME_DIR#/conf/context.xml"
+RC=$?
+if [ "$RC" -gt "1" ] ;
+  then
+    exit $RC;
+fi
+
+resource_link=$(java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML ExecutePath -xml "&UC4RB_TC_HOME_DIR#/conf/context.xml" -x '//Context/ResourceLink[@name="&UC4RB_TC_DS_NAME#"]' -filter all | grep "Return code: 0")
+
+if [ -n "$resource_link" ] ; then
+   echo "Resource Link &UC4RB_TC_DS_NAME# exists"
+   exit 0
+else
+   echo 'Adding resource link:'
+   echo '&RESOURCE_LINK_ELEMENT#'
+   java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML AddElement -xml "&UC4RB_TC_HOME_DIR#/conf/context.xml" -x "//Context" -e '&RESOURCE_LINK_ELEMENT#' -filter all
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+fi
+
+!-------------------- Check if resource link is created --------------------------
+echo "Check if resource link &UC4RB_TC_DS_NAME# created"
+resource_link=$(java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" XML ExecutePath -xml "&UC4RB_TC_HOME_DIR#/conf/context.xml" -x '//Context/ResourceLink[@name="&UC4RB_TC_DS_NAME#"]' -filter all | grep "Return code: 0")
+
+if [ -n "$resource_link" ] ; then
+  echo "Resource Link &UC4RB_TC_DS_NAME# created!"
+else
+  echo "Resource Link &UC4RB_TC_DS_NAME# is not created. Job fail!"
+  exit 2
+fi
+
+:ENDIF
+
+exit 0
+
+! :IF &UC4RB_TC_RESTART_TOMCAT# = "YES"
+! :  PSET &UC4RB_TC_RESTART_TOMCAT_UNIX# = "YES"
+! :ENDIF]]></process>
+      </row>
+      <row>
+         <pre_process><![CDATA[:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB
+:INCLUDE PCK.AUTOMIC_TOMCAT.PRV.INCLUDE.PP_CREATE_DATASOURCE]]></pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>UNIX</platform>
+         <agent><![CDATA[<UNIX>]]></agent>
+         <job_report_path>2</job_report_path>
+         <priority>0</priority>
+         <unix_shell></unix_shell>
+         <unix_shell_options></unix_shell_options>
+         <unix_type></unix_type>
+         <unix_cmd></unix_cmd>
+      </row>
+   </job_attributes>
+   <object_variables>
+      <row>
+         <value>/opt/uc4/agents/unix/bin</value>
+         <name>&amp;UC4RB_AGENT_WORKING_DIR#</name>
+      </row>
+      <row>
+         <value>false</value>
+         <name>&amp;UC4RB_DEBUG#</name>
+      </row>
+   </object_variables>
+   <rollback_definitions>
+      <row>
+         <rollback_object>PCK.AUTOMIC_TOMCAT.PRV.JOB.DROP_DATASOURCE@UNIX</rollback_object>
+      </row>
+   </rollback_definitions>
+</jobs>

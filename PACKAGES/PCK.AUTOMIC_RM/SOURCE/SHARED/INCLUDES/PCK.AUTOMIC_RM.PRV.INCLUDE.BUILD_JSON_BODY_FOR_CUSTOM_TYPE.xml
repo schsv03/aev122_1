@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_RM.PRV.INCLUDE.BUILD_JSON_BODY_FOR_CUSTOM_TYPE</name>
+         <type>JOBI</type>
+         <description>Build Json body for custom type property</description>
+         <versioning_id>-134984928</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[: SET &REQUEST_BODY# = STR_CAT(&REQUEST_BODY#, """custom_type"": {")
+: SET &REQUEST_BODY# = STR_CAT(&REQUEST_BODY#, """name"": ""&UC4RB_ETT_TYPE#""")
+: SET &REQUEST_BODY# = STR_CAT(&REQUEST_BODY#, "},")]]></process>
+      </row>
+   </scripts>
+</jobi>

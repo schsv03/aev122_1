@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.INCLUDE.ARCH_MAPPING</name>
+         <type>JOBI</type>
+         <versioning_id>-2018836050</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &MAPPING_OBJECT# = "PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.VARA.ARCH_MAPPING"
+
+:SET &UC4RB_TARGET_OS# = GET_VAR(&MAPPING_OBJECT#, &UC4RB_TARGET_OS_DIS_ARCH#, 2)
+:PUBLISH &UC4RB_TARGET_OS#,,"TASK"
+:SET &UC4RB_AGENT_BINARY# = GET_VAR(&MAPPING_OBJECT#, &UC4RB_TARGET_OS_DIS_ARCH#, 3)
+:PUBLISH &UC4RB_AGENT_BINARY#,,"TASK"
+:SET &UC4RB_SM_BINARY# = GET_VAR(&MAPPING_OBJECT#, &UC4RB_TARGET_OS_DIS_ARCH#, 4)
+:PUBLISH &UC4RB_SM_BINARY#,,"TASK"]]></process>
+      </row>
+   </scripts>
+</jobi>

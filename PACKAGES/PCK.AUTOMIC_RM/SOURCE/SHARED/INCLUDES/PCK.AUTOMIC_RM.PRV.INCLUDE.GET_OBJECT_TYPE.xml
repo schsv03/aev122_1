@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_RM.PRV.INCLUDE.GET_OBJECT_TYPE</name>
+         <type>JOBI</type>
+         <description>Get Object Type</description>
+         <versioning_id>552511626</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &UC4RB_VARA# = "PCK.AUTOMIC_RM.PRV.VARA.OBJECT_TYPE"
+:SET &UC4RB_OUT_OBJECT_TYPE# = GET_VAR(&UC4RB_VARA#,"&UC4RB_OBJECT_TYPE#", 2)]]></process>
+      </row>
+   </scripts>
+</jobi>

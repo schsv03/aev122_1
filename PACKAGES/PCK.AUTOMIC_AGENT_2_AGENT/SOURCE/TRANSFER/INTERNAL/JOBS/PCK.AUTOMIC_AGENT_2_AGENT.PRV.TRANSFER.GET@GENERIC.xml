@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobf>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>WINDOWS</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_AGENT_2_AGENT.PRV.TRANSFER.GET@GENERIC</name>
+         <type>JOBF</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>agent to agent filetransfer</description>
+         <versioning_id>-1962621769</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:PUT_ATT FT_SRC_HOST = "&UC4RB_DFFT_SOURCE_HOST#"
+
+:SET &UC4RB_DFFT_TRANSFER_KEEPS# = STR_UC(&UC4RB_DFFT_TRANSFER_KEEPS#)
+:SET &UC4RB_DFFT_TRANSFER_COMP# = STR_UC(&UC4RB_DFFT_TRANSFER_COMP#)
+:SET &UC4RB_DFFT_WILDCARD# = STR_UC(&UC4RB_DFFT_WILDCARD#)
+:SET &UC4RB_DFFT_SOURCE_SUBDIR# = STR_UC(&UC4RB_DFFT_SOURCE_SUBDIR#)
+:SET &UC4RB_COMPLETE_FOLDER_STRUCT# = STR_UC(&UC4RB_COMPLETE_FOLDER_STRUCT#)
+:SET &UC4RB_DFFT_TARGET_ACTIONIF# = STR_UC(&UC4RB_DFFT_TARGET_ACTIONIF#)
+
+:SET &UC4RB_SOURCE_AGENT_OS# = GET_VAR('UC_HOST_JCL_VAR', &UC4RB_DFFT_SOURCE_HOST#)
+:SET &UC4RB_TARGET_AGENT_OS# = GET_VAR('UC_HOST_JCL_VAR', &UC4RB_DFFT_TARGET_HOST#)
+
+! TARGET_ACTIONIF can only be one of APPEN,OVERWRITE, CANCEL when comming from the promptset
+! a YES or NO can only be passed in via the DD
+:IF &UC4RB_DFFT_TARGET_ACTIONIF# = "YES" OR "NO"
+:  INCLUDE PCK.AUTOMIC_AGENT_2_AGENT.PRV.INCLUDE.NORMALIZE_PATHS_AND_UPDATE_WILDCARD_MODE
+:ENDIF
+
+! Handle Source-Path
+:PRINT "Source-Path before convert: &UC4RB_DFFT_SOURCE_FILES#"
+! WINDOWS
+:IF &UC4RB_SOURCE_AGENT_OS# = "WINDOWS"
+:  SET &UC4RB_CONVERTED_STRING# = &UC4RB_DFFT_SOURCE_FILES#
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_WINDOWS_STYLE
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.REMOVE_TRAILING_LINE_BREAK
+:  PSET &UC4RB_DFFT_SOURCE_FILES# = &UC4RB_CONVERTED_STRING#
+:ENDIF
+
+!UNIX
+:IF &UC4RB_SOURCE_AGENT_OS# = "UNIX"
+:  SET &UC4RB_CONVERTED_STRING# = &UC4RB_DFFT_SOURCE_FILES#
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_UNIX_STYLE
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.REMOVE_TRAILING_LINE_BREAK
+:  PSET &UC4RB_DFFT_SOURCE_FILES# = &UC4RB_CONVERTED_STRING#
+:ENDIF
+:PRINT "Source-Path after convert: &UC4RB_DFFT_SOURCE_FILES#"
+
+! Handle Target-Path
+:PRINT "Target before convert: &UC4RB_DFFT_TARGET_FILES#"
+! WINDOWS
+:IF &UC4RB_TARGET_AGENT_OS# = "WINDOWS"
+:  SET &UC4RB_CONVERTED_STRING# = &UC4RB_DFFT_TARGET_FILES#
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_WINDOWS_STYLE
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.REMOVE_TRAILING_LINE_BREAK
+:  PSET &UC4RB_DFFT_TARGET_FILES# = &UC4RB_CONVERTED_STRING#
+:ENDIF
+
+! UNIX
+:IF &UC4RB_TARGET_AGENT_OS# = "UNIX"
+:  SET &UC4RB_CONVERTED_STRING# = &UC4RB_DFFT_TARGET_FILES#
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_UNIX_STYLE
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.REMOVE_TRAILING_LINE_BREAK
+:  PSET &UC4RB_DFFT_TARGET_FILES# = &UC4RB_CONVERTED_STRING#
+:ENDIF
+:PRINT "Target after convert: &UC4RB_DFFT_TARGET_FILES#"
+
+:PUT_ATT FT_SRC_FILE = "&UC4RB_DFFT_SOURCE_FILES#"
+:PUT_ATT FT_DST_FILE = "&UC4RB_DFFT_TARGET_FILES#"
+:PUT_ATT FT_DST_HOST = "&UC4RB_DFFT_TARGET_HOST#"
+
+:PUT_ATT FT_COMPRESS = "NO"
+:IF &UC4RB_DFFT_TRANSFER_COMP# = "YES"
+:  PUT_ATT FT_COMPRESS = "NORMAL"
+:ENDIF
+:PUT_ATT FT_ERASE_SRC_FILE = "Y"
+:IF &UC4RB_DFFT_TRANSFER_KEEPS# = "YES"
+:  PUT_ATT FT_ERASE_SRC_FILE = "N"
+:ENDIF
+:PUT_ATT FT_EXISTING_DST_FILE = "A"
+:IF &UC4RB_DFFT_TARGET_ACTIONIF# = "OVERWRITE" OR "YES"
+:  PUT_ATT FT_EXISTING_DST_FILE = "O"
+:ENDIF
+:IF &UC4RB_DFFT_TARGET_ACTIONIF# = "APPEND"
+:  PUT_ATT FT_EXISTING_DST_FILE = "E"
+:ENDIF
+
+:PUT_ATT FT_FILE_TYPE = "T"
+:IF &UC4RB_DFFT_TRANSFER_FORMAT# = "BINARY"
+:  PUT_ATT FT_FILE_TYPE = "B"
+:ENDIF
+
+:PUT_ATT FT_WILDCARDS = "N"
+:IF &UC4RB_DFFT_WILDCARD# = "YES"
+:  PUT_ATT FT_WILDCARDS = "Y"
+:  PUT_ATT MAX_PARALLEL_TRANSFERS = "1"
+:  IF &UC4RB_DFFT_PARALLEL_TRANSFER# > 1
+:    PUT_ATT MAX_PARALLEL_TRANSFERS = "&UC4RB_DFFT_PARALLEL_TRANSFER#"
+:  ENDIF
+:  PUT_ATT FT_INCLUDE_SUB_DIR = "N"
+:  IF &UC4RB_DFFT_SOURCE_SUBDIR# = "YES"
+:    PUT_ATT FT_INCLUDE_SUB_DIR = "Y"
+:    PUT_ATT FT_TRANSFER_FOLDERS = "N"
+:    IF &UC4RB_COMPLETE_FOLDER_STRUCT# = "YES"
+:      PUT_ATT FT_TRANSFER_FOLDERS = "Y"
+:    ENDIF
+:  ENDIF
+:ENDIF
+
+:PUT_ATT FT_SRC_LOGIN = "&UC4RB_DFFT_SOURCE_LOGIN#"
+:PUT_ATT FT_DST_LOGIN = "&UC4RB_DFFT_TARGET_LOGIN#"
+
+]]></process>
+      </row>
+   </scripts>
+   <file_transfer_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <destination_path>DstFile</destination_path>
+         <source_path>SrcFile</source_path>
+         <destination_agent><![CDATA[<WIN>]]></destination_agent>
+         <source_agent><![CDATA[<WIN>]]></source_agent>
+         <max_parallel_ft>1</max_parallel_ft>
+         <allow_overwrite>1</allow_overwrite>
+         <repeat_type>S</repeat_type>
+         <additional_attributes>1=''2=''</additional_attributes>
+         <text_type>1</text_type>
+      </row>
+   </file_transfer_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobf>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_RM.PRV.INCLUDE.GET_DYNAMIC_FULL_NAME</name>
+         <type>JOBI</type>
+         <description>Get full name of dynamic property</description>
+         <versioning_id>2060358665</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &UC4RB_DYNAMIC_FULL_NAME# = STR_CAT("/", &UC4RB_DYNAMIC_PROP_NAMESPACE#)
+:SET &UC4RB_DYNAMIC_FULL_NAME# = STR_CAT(&UC4RB_DYNAMIC_FULL_NAME#, "/")
+:SET &UC4RB_DYNAMIC_FULL_NAME# = STR_CAT(&UC4RB_DYNAMIC_FULL_NAME#, &UC4RB_DYNAMIC_PROP_NAME#)
+:SET &UC4RB_DYNAMIC_FULL_NAME# = STR_SUBSTITUTE(&UC4RB_DYNAMIC_FULL_NAME#, "///", "/")
+:PSET &UC4RB_DYNAMIC_FULL_NAME# = STR_SUBSTITUTE(&UC4RB_DYNAMIC_FULL_NAME#, "//", "/")]]></process>
+      </row>
+   </scripts>
+</jobi>

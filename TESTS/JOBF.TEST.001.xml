@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobf>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <ert>34</ert>
+         <ert_trend>8</ert_trend>
+         <platform>WINDOWS</platform>
+         <last_runtimes>FwAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>JOBF.TEST.001</name>
+         <type>JOBF</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <description>Test File Transfer</description>
+         <versioning_id>732874350</versioning_id>
+      </row>
+   </general_attributes>
+   <file_transfer_attributes>
+      <row>
+         <destination_path>c:\temp\test_copy.zip</destination_path>
+         <source_path>C:\temp\test.zip</source_path>
+         <destination_agent>WIN02</destination_agent>
+         <source_agent>WIN01</source_agent>
+         <destination_login>LOGIN.WIN01</destination_login>
+         <source_login>LOGIN.WIN01</source_login>
+         <max_parallel_ft>1</max_parallel_ft>
+         <allow_overwrite>1</allow_overwrite>
+         <repeat_type>S</repeat_type>
+         <additional_attributes>1=''2=''</additional_attributes>
+         <text_type>1</text_type>
+      </row>
+   </file_transfer_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobf>

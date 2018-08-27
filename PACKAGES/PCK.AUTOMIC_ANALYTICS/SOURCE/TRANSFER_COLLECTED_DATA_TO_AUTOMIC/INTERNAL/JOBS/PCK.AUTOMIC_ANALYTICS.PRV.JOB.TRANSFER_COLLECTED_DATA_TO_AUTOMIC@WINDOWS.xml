@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>N</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <platform>WINDOWS</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_ANALYTICS.PRV.JOB.TRANSFER_COLLECTED_DATA_TO_AUTOMIC@WINDOWS</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>-737529399</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:ATTACH_RES "PCK.AUTOMIC_ANALYTICS.PRV.STORE.TELEMETRY_TOOLS", "*", C, N
+
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_CMDLINE_CMD@WINDOWS
+:INCLUDE PCK.ANALYTICS.PRV.INCLUDE.POPULATE_VARS
+
+cd /d "&$AGENT_RESOURCES_CLIENT#"
+
+:JCL_CONCAT_CHAR "?"
+java -jar "&$AGENT_RESOURCES_CLIENT#/telemetry-tools.jar" datashare -au  "&ANALYTICS_BACKEND_API_URL#" ?
+                                                                    -ak  "&ANALYTICS_BACKEND_API_KEY#" ?
+                                                                    -c   "&DCS_COMSUMER_ID#" ?
+                                                                    -o   "&DCS_OUTPUT_FOLDER#" ?
+                                                                    -sl  "&DCS_FILESIZE_LIMIT_MB#" ?
+                                                                    -a   "&DCS_ARCHIVE_ENABLED#" ?
+                                                                    -af  "&DCS_ARCHIVE_FOLDER#" ?
+                                                                    -akd "&DCS_ARCHIVE_KEEP_DAYS#" ?
+                                                                    -eel "&DCS_EXPORTLOG_ENABLED#" ?
+                                                                    -el  "&DCS_EXPORTLOG_FOLDER#" ?
+                                                                    -e   "&DCS_EXPORT_ENABLED#" ?
+                                                                    -ekd "&DCS_EXPORT_KEEP_DAYS#" ?
+                                                                    -s   "&DCS_SEND_ENABLED#" ?
+                                                                    -lfu "&DCS_LIQUIDFILES_BASEURL#" ?
+                                                                    -lff "&DCS_LIQUIDFILES_FILEDROP#" ?
+                                                                    -lfmsgcontent "&DCS_LIQUIDFILES_MESSAGE#" ?
+                                                                    -lfmsgsender "&DCS_LIQUIDFILES_SENDER#" ?
+                                                                    -lfmsgsubj "&DCS_LIQUIDFILES_SUBJECT#" ?
+                                                                    -tmscnxtms "&DCS_TIMEOUT_DCS_CONNECT#" ?
+                                                                    -tmssocktms "&DCS_TIMEOUT_DCS_SOCKET#" ?
+                                                                    -lfcnxtms "&DCS_TIMEOUT_LIQUIDFILES_CONNECT#" ?
+                                                                    -lfrwtms "&DCS_TIMEOUT_LIQUIDFILES_RW#"
+:JCL_CONCAT_CHAR
+
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_CMDLINE_CMD@WINDOWS
+]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>WINDOWS</platform>
+         <agent><![CDATA[<WIN>]]></agent>
+         <job_report_path>2</job_report_path>
+         <win_work_dir>c:\</win_work_dir>
+         <win_typ>0</win_typ>
+         <win_view>0</win_view>
+         <win_logon_as_batch>0</win_logon_as_batch>
+         <win_show_at_desktop>0</win_show_at_desktop>
+         <win_report_by_script>0</win_report_by_script>
+         <job_object></job_object>
+         <win_cmd></win_cmd>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

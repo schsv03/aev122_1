@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.INCLUDE.ATTACH_RESOURCE</name>
+         <type>JOBI</type>
+         <versioning_id>-2027107345</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:ATTACH_RES "PCK.AUTOMIC_AGENT_DEPLOYMENT.PRV.STORE" ,"*", C, N
+! Setting jar class path into variable
+:SET &UC4RB_JAVATOOL_PATH_JAR#= STR_CAT(&$AGENT_RESOURCES_CLIENT#,"agent-deployment-tool.jar")]]></process>
+      </row>
+   </scripts>
+</jobi>

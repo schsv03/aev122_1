@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.INCLUDE.PP_LIST_JNDI_RESOURCES</name>
+         <type>JOBI</type>
+         <versioning_id>-459340153</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &variableName# = "PCK.AUTOMIC_TOMCAT.PRV.VARA.TEMP.PP_LIST_JNDI_RESOURCES_RESULT.&$ACTIVATOR_RUNID#.&$PHYS_DATE_YYYYMMDD#"
+:SET &variablePath# = ""
+
+:IF &UC4RB_TC_RES_TYPE# <> ""
+:  SET &LIST_DS_STATEMENT# = "OK - Listed global resources of type "
+:ELSE
+:  SET &LIST_DS_STATEMENT# = "OK - Listed global resources of all types"
+:ENDIF
+
+:SET &hnd# = PREP_PROCESS_REPORT(,,,"*")
+:PROCESS &hnd#
+
+:   SET &line# = GET_PROCESS_LINE(&hnd#,1)
+:   SET &line# = STR_TRIM(&line#)
+
+:   SET &is_ok# = STR_FIND(&line#, &LIST_DS_STATEMENT#)
+
+:   IF &is_ok# <> 0
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CREATE_PASS_VALUES_VARIABLE
+:     IF &ret# <> 0
+:       MODIFY_STATE RETCODE = &ret#
+:       PRINT "Unable to create new variable object: UC4_RB_OUT_APPLICATIONS_&$ACTIVATOR_RUNID#"
+:       TERM_PROCESS &hnd#
+:     ELSE
+:       DEFINE &list_ds#, string, 100
+:       FILL &list_ds#[] = STR_SPLIT(&line#,"-----")
+:       SET &ds_count# = 2
+:       DEFINE &ds_info#, string, 2
+:       WHILE &list_ds#[&ds_count#] > ""
+:         FILL &ds_info#[] = STR_SPLIT(&list_ds#[&ds_count#],":")
+:         SET &ds_name# = &ds_info#[1]
+:         IF STR_FIND(&ds_name#,"FAIL - ") = 1
+:           MODIFY_STATE RETCODE = 2
+:           SET &remove# = REMOVE_OBJECT("&variableName#")
+:           PRINT &ds_name#
+:           TERM_PROCESS &hnd#
+:         ELSE
+:           SET &ds_type# = &ds_info#[2]
+:           PRINT "&ds_name#: &ds_type#"
+:           PUT_VAR &variableName#, "&ds_name#", "&ds_type#"
+:         ENDIF
+
+:         SET &ds_count# = &ds_count# + 1
+
+:       ENDWHILE
+
+:     ENDIF
+:   ENDIF
+
+:ENDPROCESS
+
+:PSET &UC4RB_OUT_TC_LIST_RESRC# = "&variableName#"]]></process>
+      </row>
+   </scripts>
+</jobi>

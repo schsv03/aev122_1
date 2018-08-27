@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>WINDOWS</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.JOB.STOP_SERVER@WINDOWS</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>257153424</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu>Stops Tomcat using the shutdown script provided by Tomcat or starting a preconfigured Windows service/Unix deamon. Stops server only on a target host, other cluster nodes are not stopped.</Docu>
+      </row>
+   </documentation>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.ITPA_SHARED.PUB.INCLUDE.POWERSHELL_UTILITY
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_POWERSHELL_CMD@WINDOWS
+:INCLUDE PCK.AUTOMIC_TOMCAT.PRV.INCLUDE.GET_NETWORK_STATISTICS@WINDOWS
+:WAIT 2
+
+:SET &UC4RB_CONVERTED_STRING# = &UC4RB_TC_HOME_DIR#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_WINDOWS_STYLE
+:SET &UC4RB_TC_HOME_DIR# = &UC4RB_CONVERTED_STRING#
+
+!-------------------------------------------------------
+function FailIfNotRunning {
+:  IF  &UC4RB_TC_FAIL_IF_NOT_RUNNING# = "YES"
+                  exit 1;
+:  ELSE
+                  exit 0;
+:  ENDIF
+}
+
+!-------------------------------------------------------
+function ShutdownTomcat {
+:IF &UC4RB_TC_STOP_MODE# = "SCRIPT"
+
+  cd "&UC4RB_TC_HOME_DIR#\bin"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_POWERSHELL_CMD@WINDOWS
+
+  Write-Host "Stopping Tomcat using catalina.bat..."
+  .\catalina.bat stop
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_POWERSHELL_CMD@WINDOWS
+  Return
+:ELSE
+  Write-Host "Stopping Tomcat service... "
+  Stop-Service "&UC4RB_TC_SERVICE_NAME#"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_POWERSHELL_CMD@WINDOWS
+  Return
+:ENDIF
+
+}
+
+!-------------------------------------------------------
+function IsTomcatRunning($pid_list) {
+
+  $is_tomcat_running = 0
+
+  $catalina_home = "&UC4RB_TC_HOME_DIR#";
+  $catalina_home = $catalina_home.Replace("\", "\\");
+  $pid_list | foreach {
+!   Find out which process is running to $port. Important: the process name of a tomcat instance running by script is "java.exe"
+
+    $tomcat_command =(Get-WmiObject win32_process -Filter "ProcessId=$_" | select commandline).commandline
+!   The process might not belong to wmi win32_process class (I have not seen any yet). In that case the command will return an error, the job continues and $tomcat_command=""
+    if($tomcat_command){
+      Write-Host "The process with Id $_ is:`n $tomcat_command"
+    }else {
+      Write-Host "There is no process with Id $_"
+    }
+
+:IF &UC4RB_TC_STOP_MODE# = "SCRIPT"
+    if($tomcat_command -match "catalina.home=""$catalina_home""" -and $tomcat_command -match "org.apache.catalina.startup.Bootstrap  start"  ) {
+!     Make sure the process running is from Tomcat with the same home directory
+      $is_tomcat_running = 1
+    }
+
+:ELSE
+    if($tomcat_command -match "&UC4RB_TC_SERVICE_NAME#"  ) {
+
+      $tomcat_status = (Get-Service|Where-Object {$_.Name -eq "&UC4RB_TC_SERVICE_NAME#"}).Status
+
+      if( !$tomcat_status ){
+        Write-Host "There is no service &UC4RB_TC_SERVICE_NAME# installed"
+      }elseif( $tomcat_status -eq "Running") {
+        $is_tomcat_running = 1
+      }else {
+        Write-Host "Service &UC4RB_TC_SERVICE_NAME# is not running!"
+      }
+    }
+
+:ENDIF
+
+! End of foreach. Finish checking if tomcat is running on each port
+  }
+  return $is_tomcat_running
+
+}
+!-------------------------------------------------------
+function GetPidFromPort($port_list) {
+
+  $pid_list = @()
+! Find the pid associate with each port
+  $port_list | foreach {
+    $port = $_
+! 2 services can listen on the same port (special case). Check the link for more detail:
+! http://stackoverflow.com/questions/2067830/how-can-a-wcf-service-listen-the-same-port-as-iis?lq=1
+    (Get-NetworkStatistics) | Where-Object {$_.State -eq "LISTENING" -and $_.LocalPort -eq $port}|ForEach-Object {
+
+!       Process Id of the process associated with $port
+        $process_id = ($_).PID
+
+        if($process_id){
+          Write-Host "Process $process_id is running on port $port"
+          $pid_list += $process_id
+        }
+    }
+  }
+! Several ports may belong to 1 or several processes -> the array $pid_list may be duplicated(Tomcat HTTP(8080) and HTTPS(8443)) or not (Tomcat(8080) and JBoss(8443) )
+  $pid_list = $pid_list | select -uniq
+  Return $pid_list
+}
+
+!-------------------------------------------------------
+
+function GetPortTomcat {
+
+! Get Tomcat HTTP or HTTPS port number
+  $port_list = @()
+  (Select-Xml -path "&UC4RB_TC_HOME_DIR#\conf\server.xml" -xpath "/Server/Service/Connector[@protocol='HTTP/1.1' or count(@protocol)=0]/@port") | foreach {
+    $port = $_.Node."#text"
+
+!   Check if tomcat port exists in server.xml and is a number
+    $is_port_number = [regex]::matches("$port", "^[0-9]*$")|%({$_.Success})
+    if( "$is_port_number" -eq "True" ){
+      $port_list += $port
+    }
+  }
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_POWERSHELL_CMD@WINDOWS
+
+  Return $port_list
+}
+
+!----------------- The action starts here ---------------------
+
+$pid_list = @()
+$port_list = @()
+
+! Get tomcat ports from \conf\server.xml. There can be 1 or more
+$port_list = GetPortTomcat
+
+if(!$port_list ){
+  Write-Host "Can not get port information from server.xml"
+  exit 2
+}else {
+  Write-Host "The port number of Tomcat is $port_list"
+}
+
+! Get process id of the process running on tomcat ports
+$pid_list = GetPidFromPort($port_list)
+
+if(!$pid_list ){
+  Write-Host "Tomcat is not running!"
+  FailIfNotRunning
+}
+
+! Check if tomcat is the process (service) running with the pids
+$is_tomcat_running = IsTomcatRunning($pid_list)
+
+if($is_tomcat_running){
+  ShutdownTomcat
+}else {
+:IF &UC4RB_TC_STOP_MODE# = "SCRIPT"
+  Write-Host "Tomcat is not running as script!"
+:ELSE
+  Write-Host "Tomcat is not running as service: &UC4RB_TC_SERVICE_NAME#!"
+:ENDIF
+  FailIfNotRunning
+}
+
+! Check if Tomcat is stopped
+Start-Sleep -s 5
+Write-Host "Check if Tomcat is stopped..."
+
+$is_tomcat_running = 0
+
+$is_tomcat_running = IsTomcatRunning($pid_list)
+
+if (!$is_tomcat_running) {
+  Write-Host "Tomcat has been stopped!"
+  exit 0
+} else {
+  Write-Host "Stop Tomcat failed!"
+  exit 2
+}
+
+]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>WINDOWS</platform>
+         <agent><![CDATA[<WIN>]]></agent>
+         <job_report_path>2</job_report_path>
+         <win_work_dir>c:\</win_work_dir>
+         <win_typ>2</win_typ>
+         <win_view>0</win_view>
+         <win_logon_as_batch>0</win_logon_as_batch>
+         <win_show_at_desktop>0</win_show_at_desktop>
+         <win_report_by_script>0</win_report_by_script>
+         <job_object>1</job_object>
+         <win_cmd></win_cmd>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

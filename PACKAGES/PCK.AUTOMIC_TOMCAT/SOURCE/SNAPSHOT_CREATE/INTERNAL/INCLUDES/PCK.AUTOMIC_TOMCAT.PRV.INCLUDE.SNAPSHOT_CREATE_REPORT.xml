@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.INCLUDE.SNAPSHOT_CREATE_REPORT</name>
+         <type>JOBI</type>
+         <versioning_id>-1274038820</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:IF &UC4RB_REPORT_TYPE# = "Overview"
+:      JCL_CONCAT_CHAR "?"
+        java -Ddebug=&UC4RB_DEBUG# -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" tomcat CompareTomcatSnapshot "&UC4RB_ARCHIVE_PATH#" ?
+        "&UC4RB_APP_FILTER_EXCLUDE#" "&UC4RB_SERVER_FILTER_EXCLUDE#" &UC4RB_OUT_TARGET_GUID# NULL 0 NULL
+:      JCL_CONCAT_CHAR
+:ENDIF
+
+:IF &UC4RB_REPORT_TYPE# = "Compare"
+
+:  JCL_CONCAT_CHAR "?"
+        java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" tomcat CompareTomcatSnapshot "&UC4RB_ARCHIVE_PATH#" ?
+        "&UC4RB_APP_FILTER_EXCLUDE#" "&UC4RB_SERVER_FILTER_EXCLUDE#" &UC4RB_OUT_TARGET_GUID# &UC4RB_COMPARE_NAME# &UC4RB_REPORT_ID# &UC4RB_CALLBACK_URL#
+:  JCL_CONCAT_CHAR
+
+:ENDIF
+
+:IF &UC4RB_REPORT_TYPE# = "Detail"
+:  JCL_CONCAT_CHAR "?"
+      java -jar "&$AGENT_RESOURCES_CLIENT#/tomcat-tool.jar" tomcat DetailedCompareTomcatSnapshot "&UC4RB_ARCHIVE_PATH#/&UC4RB_OUT_TARGET_GUID#" ?
+      "&UC4RB_FILE_NAME#" ?
+      "&UC4RB_FILE_NAME#-Result.xml"
+:  JCL_CONCAT_CHAR
+:ENDIF]]></process>
+      </row>
+   </scripts>
+</jobi>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.ANALYTICS.PRV.INCLUDE.DISPLAY_VARS</name>
+         <type>JOBI</type>
+         <versioning_id>573672670</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[! Display populated variables for debugging purpose
+echo "ANALYTICS_BACKEND_API_KEY : &ANALYTICS_BACKEND_API_KEY#";
+echo "ANALYTICS_BACKEND_API_URL : &ANALYTICS_BACKEND_API_URL#";
+echo "DCS_COMSUMER_ID : &DCS_COMSUMER_ID#";
+echo "DCS_EXPORTLOG_ENABLED : &DCS_EXPORTLOG_ENABLED#";
+echo "DCS_EXPORTLOG_FOLDER : &DCS_EXPORTLOG_FOLDER#";
+echo "DCS_FILESIZE_LIMIT_MB : &DCS_FILESIZE_LIMIT_MB#";
+echo "DCS_OUTPUT_FOLDER : &DCS_OUTPUT_FOLDER#";
+echo "DCS_ARCHIVE_ENABLED : &DCS_ARCHIVE_ENABLED#";
+echo "DCS_ARCHIVE_FOLDER : &DCS_ARCHIVE_FOLDER#";
+echo "DCS_ARCHIVE_KEEP_DAYS : &DCS_ARCHIVE_KEEP_DAYS#";
+echo "DCS_EXPORT_ENABLED : &DCS_EXPORT_ENABLED#";
+echo "DCS_EXPORT_KEEP_DAYS : &DCS_EXPORT_KEEP_DAYS#";
+echo "DCS_SEND_ENABLED : &DCS_SEND_ENABLED#";
+echo "DCS_LIQUIDFILES_BASEURL : &DCS_LIQUIDFILES_BASEURL#";
+echo "DCS_LIQUIDFILES_FILEDROP : &DCS_LIQUIDFILES_FILEDROP#";
+echo "DCS_LIQUIDFILES_MESSAGE : &DCS_LIQUIDFILES_MESSAGE#";
+echo "DCS_LIQUIDFILES_SENDER : &DCS_LIQUIDFILES_SENDER#";
+echo "DCS_LIQUIDFILES_SUBJECT : &DCS_LIQUIDFILES_SUBJECT#";]]></process>
+      </row>
+   </scripts>
+</jobi>

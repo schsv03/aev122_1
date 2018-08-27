@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.INCLUDE.SET_OS_FOR_COMPONENT_FLOW</name>
+         <type>JOBI</type>
+         <versioning_id>1600339887</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[!Check Overwrite Agent Object
+:SET &AGENT_VALUE# = "AGENT#"
+:SET &AGENT# = GET_SCRIPT_VAR(&AGENT_VALUE#)
+!check if the agent link was not resolved
+:IF &AGENT# = "EXT:agent"
+:  SET &AGENT# = "No_Agent_assigned"
+:ENDIF
+
+!Check Overwrite Agent Object
+:SET &OVERWRITE_AGENT_VALUE# = "OVERWRITE_AGENT#"
+:SET &OVERWRITE_AGENT# = GET_SCRIPT_VAR(&OVERWRITE_AGENT_VALUE#)
+!check if the agent link was not resolved
+:IF &OVERWRITE_AGENT# = "EXT:/agent_assignment/agent"
+:  SET &OVERWRITE_AGENT# = ""
+:  PUB &OVERWRITE_AGENT#,,TASK
+:ENDIF
+:IF &OVERWRITE_AGENT# <> ""
+:  SET &AGENT# = &OVERWRITE_AGENT#
+:ENDIF
+
+! Check Overwrtie Login Object
+:SET &OVERWRITE_LOGIN_VALUE# = "OVERWRITE_LOGIN#"
+:SET &OVERWRITE_LOGIN# = GET_SCRIPT_VAR(&OVERWRITE_LOGIN_VALUE#)
+!check if the login link was not resolved
+:IF &OVERWRITE_LOGIN# = "EXT:/agent_assignment/login"
+:  SET &OVERWRITE_LOGIN# = ""
+:  PUB &OVERWRITE_LOGIN#,,TASK
+:ENDIF
+:IF &OVERWRITE_LOGIN# <> ""
+:  SET &LOGIN# = &OVERWRITE_LOGIN#
+:ENDIF
+
+! Check Target ID
+:SET &TARGET_ID_VALUE# = "TARGET_ID#"
+:SET &TARGET_ID# = GET_SCRIPT_VAR(&TARGET_ID_VALUE#)
+!check if the target id link was not resolved
+:IF &TARGET_ID# = "EXT:@target/system/id"
+:  SET &TARGET_ID# = ""
+:  PUB &TARGET_ID#,,TASK
+:ENDIF
+
+!get the agent OS type
+:SET &UC4RB_AGENT_OS# = GET_VAR('UC_HOST_JCL_VAR', &AGENT#)
+:PRINT "COMPONENT-FLOW: &AGENT# agent runs on &UC4RB_AGENT_OS#"
+
+!publish values for subordinate tasks
+:PUB &UC4RB_AGENT_OS#,,TASK
+:PUB &AGENT#,,TASK
+:PUB &LOGIN#,,TASK]]></process>
+      </row>
+   </scripts>
+</jobi>

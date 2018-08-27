@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>UNIX</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.JOB.STOP_SERVER@UNIX</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>2026586523</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[
+:SET &UC4RB_CONVERTED_STRING# = &UC4RB_TC_HOME_DIR#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_UNIX_STYLE
+:SET &UC4RB_TC_HOME_DIR# = &UC4RB_CONVERTED_STRING#
+
+:SET &UC4RB_TC_HOME_DIR_STRING# = &UC4RB_TC_HOME_DIR#
+:SET &UC4RB_TC_HOME_DIR_STRING# = STR_SUBSTITUTE(&UC4RB_TC_HOME_DIR_STRING#, "/", "\/")
+
+FailIfNotRunning() {
+:IF &UC4RB_TC_FAIL_IF_NOT_RUNNING# = "YES"
+   exit 1
+:ELSE
+   exit 0
+:ENDIF
+}
+
+IsTomcatRunning() {
+
+  is_tomcat_running=0
+
+:SET &UNIX#= GET_VAR('UC_HOST_SW', &AGENT#)
+
+:IF &UNIX# = "HP-UX"
+  tomcat_command=`ps -efx | grep "catalina\.home=&UC4RB_TC_HOME_DIR_STRING#.* org\.apache\.catalina\.startup\.Bootstrap start"`
+:ENDIF
+:IF &UNIX# = "SunOS"
+  pid_list=`ps -ef | awk '{print $2}'`
+  tomcat_command=`for i in $pid_list ; do
+                     pargs -l $i 2>/dev/null | grep "catalina\.home=&UC4RB_TC_HOME_DIR_STRING#.* org\.apache\.catalina\.startup\.Bootstrap start"
+                  done`
+:ENDIF
+:IF &UNIX# = "AIX" OR "Linux"
+  tomcat_command=`ps -ef | grep "catalina\.home=&UC4RB_TC_HOME_DIR_STRING#.* org\.apache\.catalina\.startup\.Bootstrap start"`
+:ENDIF
+
+  if [ -n "$tomcat_command" ]; then
+    is_tomcat_running=1
+  fi
+
+  echo $is_tomcat_running
+
+}
+
+!-------------------------------------------------------
+ShutdownTomcat() {
+
+:IF &UC4RB_TC_STOP_MODE# = "SCRIPT"
+
+  cd "&UC4RB_TC_HOME_DIR#/bin"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+!  chmod +x catalina.sh
+  sh catalina.sh stop
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+
+:ELSE
+
+  if [ -e "&UC4RB_TC_SERVICE_NAME#" ]; then
+    "&UC4RB_TC_SERVICE_NAME#" stop
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+  else
+    echo "There is no service &UC4RB_TC_SERVICE_NAME#"
+    exit 2
+  fi
+
+:ENDIF
+
+}
+
+!-------------------------------------------------------
+
+is_tomcat_running=`IsTomcatRunning`
+
+if [ $is_tomcat_running -gt 0 ]; then
+  echo "Tomcat is running. Stopping ..."
+  ShutdownTomcat
+else
+  echo "Tomcat is not running. Exiting ..."
+  FailIfNotRunning
+fi
+
+!Check if Tomcat is stopped
+sleep 5
+echo "Check if Tomcat is stopped..."
+
+is_tomcat_running=`IsTomcatRunning`
+
+if [ $is_tomcat_running -eq 0 ]; then
+  echo "Tomcat has been stopped. "
+  exit 0
+else
+  echo "Stop Tomcat failed"
+  exit 2
+fi
+
+]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>UNIX</platform>
+         <agent><![CDATA[<UNIX>]]></agent>
+         <job_report_path>2</job_report_path>
+         <priority>0</priority>
+         <unix_shell></unix_shell>
+         <unix_shell_options></unix_shell_options>
+         <unix_type></unix_type>
+         <unix_cmd></unix_cmd>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>

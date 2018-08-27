@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<call>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>A</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_BOND.PRV.CALL.NOTIFICATION</name>
+         <has_prompts>1</has_prompts>
+         <type>CALL</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <sub_type>1</sub_type>
+         <versioning_id>2012582208</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process>:INCLUDE PCK.AUTOMIC_BOND.PRV.INC.SET_RECIPIENTS</process>
+      </row>
+   </scripts>
+   <notification_attributes>
+      <row>
+         <priority>1</priority>
+         <subject>Discovery results are available.</subject>
+      </row>
+   </notification_attributes>
+   <prompt_set_list>
+      <row>
+         <line_number>1</line_number>
+         <prompt_set>PCK.AUTOMIC_BOND.PRV.PRPT.NOTIFICATION_INFO</prompt_set>
+         <display_order>1</display_order>
+      </row>
+   </prompt_set_list>
+   <prompt_set_defaults>
+      <row>
+         <prompt_set_element_number>1</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_BOND.PRV.PRPT.NOTIFICATION_INFO</prompt_set>
+         <variable_name>MESSAGE_CONTENT#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>1</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_BOND.PRV.PRPT.NOTIFICATION_INFO</prompt_set>
+         <variable_name>MESSAGE_TYPE#</variable_name>
+      </row>
+      <row>
+         <prompt_set_element_number>1</prompt_set_element_number>
+         <prompt_set>PCK.AUTOMIC_BOND.PRV.PRPT.NOTIFICATION_INFO</prompt_set>
+         <variable_name>RECIPIENTS#</variable_name>
+      </row>
+   </prompt_set_defaults>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</call>

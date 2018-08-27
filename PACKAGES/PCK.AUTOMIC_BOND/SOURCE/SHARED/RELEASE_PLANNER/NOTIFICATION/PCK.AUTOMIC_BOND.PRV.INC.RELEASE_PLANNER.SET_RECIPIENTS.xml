@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.INC.RELEASE_PLANNER.SET_RECIPIENTS</name>
+         <type>JOBI</type>
+         <versioning_id>-206142174</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &MY_STRING# = str_cat(&RECIPIENTS#, ",")
+:SET &COMMA# = ","
+:SET &COMMA_POS# = str_find(&MY_STRING#, &COMMA#)
+:WHILE &COMMA_POS# > 0
+!  Parse current item
+:  SET &ITEM_LENGTH# = &COMMA_POS# - 1
+:  SET &ITEM# = substr(&MY_STRING#, 1, &ITEM_LENGTH#)
+:  SET &ITEM# = str_trim(&ITEM#)
+:  IF str_length(&ITEM#) > 0
+:    ADD_ATT RECIPIENT, &ITEM#
+:  ENDIF
+!  Move to next item
+:  SET &COMMA_POS# = &COMMA_POS# + 1
+:  IF &COMMA_POS# <= str_length(&MY_STRING#)
+:    SET &MY_STRING# = substr(&MY_STRING#, &COMMA_POS#)
+:    SET &COMMA_POS# = str_find(&MY_STRING#, &COMMA#)
+:  ELSE
+:    SET &COMMA_POS# = 0
+:  ENDIF
+:ENDWHILE]]></process>
+      </row>
+   </scripts>
+</jobi>

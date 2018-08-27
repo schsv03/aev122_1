@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.INCLUDE.DISCOVERY.COPY_RESULT_TO_VARA</name>
+         <type>JOBI</type>
+         <versioning_id>390086379</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:SET &FOUND# = 0
+:SET &HND# = PREP_PROCESS_REPORT("JOBS",, "REP", "JSON_DISCOVERY_RESULT:*")
+:PROCESS &HND#
+:   SET &LINE# = GET_PROCESS_LINE(&HND#)
+:   SET &JSON# = STR_SUB (&LINE#, "JSON_DISCOVERY_RESULT:", "")
+:   SET &TOP_RUNID# = SYS_ACT_TOP_NR()
+:   SET &TOP_RUNID# = FORMAT(&TOP_RUNID#)
+:   SET &LENGTH# = STR_LENGTH(&JSON#)
+:   SET &LENGTH# = FORMAT(&LENGTH#)
+:   SET &VARA_TARGET_NAME# = PCK.AUTOMIC_BOND.DISCOVERY.RESULT.VARA.TEMP.&TOP_RUNID#
+:   PRINT "Writing discovery result to &VARA_TARGET_NAME#"
+:   PRINT "KEY (Run Id of the top workflow) is &TOP_RUNID#"
+:   PRINT "VALUE (JSON result) is &LENGTH# characters long"
+:   SET &variableName# = &VARA_TARGET_NAME#
+:   SET &variablePath# = ""
+:   INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CREATE_PASS_VALUES_VARIABLE
+:   PUT_VAR &variableName#, &TOP_RUNID#, &JSON#
+:   PRINT "Finish writing."
+:   SET &FOUND# = 1
+:ENDPROCESS
+
+:IF &FOUND# = 0
+:   PRINT "Cannot find JSON Discovery Result in the Job report."
+:   EXIT 100
+:ENDIF]]></process>
+      </row>
+   </scripts>
+</jobi>

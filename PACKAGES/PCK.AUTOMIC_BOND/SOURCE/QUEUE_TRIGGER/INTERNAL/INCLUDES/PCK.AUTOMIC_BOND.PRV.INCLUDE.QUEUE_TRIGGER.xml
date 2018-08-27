@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PRV.INCLUDE.QUEUE_TRIGGER</name>
+         <type>JOBI</type>
+         <versioning_id>-553406519</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHANGE_DIRECTORY_TO_AGENT_BIN
+:ATTACH_RES "PCK.AUTOMIC_BOND.PUB.STORE.COMMUNICATION", "DMTOOL.JAR", C, N
+java -jar "&$AGENT_RESOURCES_CLIENT#dm-tool.jar" rm RunQueue -u "&UC4_QUEUE_URL#" -ak "&UC4_QUEUE_AUTH_KEY#" -qn "&UC4_QUEUE_NAME#"]]></process>
+      </row>
+   </scripts>
+</jobi>

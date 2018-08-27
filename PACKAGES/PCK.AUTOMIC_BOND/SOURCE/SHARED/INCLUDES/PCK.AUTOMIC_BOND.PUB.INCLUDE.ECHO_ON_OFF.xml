@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobi>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <name>PCK.AUTOMIC_BOND.PUB.INCLUDE.ECHO_ON_OFF</name>
+         <type>JOBI</type>
+         <description>Echo enable/disable swtich statement</description>
+         <versioning_id>859700353</versioning_id>
+      </row>
+   </general_attributes>
+   <documentation>
+      <row>
+         <Docu><![CDATA[This include is used for echo ON or OFF
+It can be used for both Windows and Unix environment]]></Docu>
+      </row>
+   </documentation>
+   <scripts>
+      <row>
+         <process><![CDATA[:SWITCH &$PLATFORM#
+:CASE "WINDOWS"
+@echo off
+:OTHER
+:ENDSWITCH]]></process>
+      </row>
+   </scripts>
+</jobi>

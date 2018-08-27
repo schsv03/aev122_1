@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs>
+   <metadata>
+      <row>
+         <version>12.2.0</version>
+      </row>
+   </metadata>
+   <general_attributes>
+      <row>
+         <minimum_ae_version>11.2</minimum_ae_version>
+         <auto_deactivation>F</auto_deactivation>
+         <child_flags>00000000000000000000000000000000</child_flags>
+         <deactivation_condition>ANY_OK</deactivation_condition>
+         <platform>UNIX</platform>
+         <last_runtimes>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</last_runtimes>
+         <max_parallel_action>1</max_parallel_action>
+         <mrt_time>000000</mrt_time>
+         <name>PCK.AUTOMIC_TOMCAT.PRV.JOB.START_SERVER@UNIX</name>
+         <type>JOBS</type>
+         <inherit_output_filter>N</inherit_output_filter>
+         <queue>CLIENT_QUEUE</queue>
+         <versioning_id>424613643</versioning_id>
+      </row>
+   </general_attributes>
+   <scripts>
+      <row>
+         <process><![CDATA[
+:SET &BOOTSTRAP# = "org\.apache\.catalina\.startup\.Bootstrap"
+
+:SET &UC4RB_CONVERTED_STRING# = &UC4RB_TC_HOME_DIR#
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CONVERT_SLASHES_UNIX_STYLE
+:SET &UC4RB_TC_HOME_DIR# = &UC4RB_CONVERTED_STRING#
+
+fail_if_running() {
+:  IF  &UC4RB_TC_FAIL_IF_RUNNING# = "YES"
+  echo "Tomcat already running."
+  exit 1
+:  ELSE
+  echo "OK."
+  exit 0
+:  ENDIF
+}
+
+is_tomcat_running() {
+
+:SET &UNIX#= GET_VAR('UC_HOST_SW', &AGENT#)
+:IF &UNIX# = "HP-UX"
+  commandLine=`ps -efx | grep "&BOOTSTRAP# start" | grep "catalina.home=&UC4RB_TC_HOME_DIR#"`;
+:ENDIF
+:IF &UNIX# = "SunOS"
+  pid_list=`ps -ef | awk '{print $2}'`
+  commandLine=`for i in $pid_list ; do
+                     pargs -l $i 2>/dev/null | grep "&BOOTSTRAP# start" | grep "catalina.home=&UC4RB_TC_HOME_DIR#"
+               done`
+:ENDIF
+:IF &UNIX# = "AIX" OR "Linux"
+  commandLine=`ps -ef | grep "&BOOTSTRAP# start" | grep "catalina.home=&UC4RB_TC_HOME_DIR#"`;
+:ENDIF
+  echo $commandLine
+}
+
+is_running=`is_tomcat_running`
+if [ -n "$is_running" ]; then
+  fail_if_running;
+fi
+
+:IF &UC4RB_TC_START_MODE# = "SCRIPT"
+! Change directory to bin
+  cd "&UC4RB_TC_HOME_DIR#/bin"
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+  if [ -e "startup.sh" ] ;then
+!   Set JAVA_OPTS variable
+: IF &UC4RB_TC_JAVA_OPTIONS# NE ""
+    export JAVA_OPTS="&UC4RB_TC_JAVA_OPTIONS#";
+    echo "Using JAVA_OPTS: $JAVA_OPTS";
+: ENDIF
+!   Call script
+    sh ./startup.sh;
+  else
+    echo "File &UC4RB_TC_HOME_DIR#/bin/startup.sh does not exist.";
+    echo "Error starting.";
+    exit 2;
+  fi
+
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+
+:ELSE
+  if [ -e "&UC4RB_TC_SERVICE_NAME#" ]; then
+! Start service
+    "&UC4RB_TC_SERVICE_NAME#" start;
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+  else
+    echo "&UC4RB_TC_SERVICE_NAME# is not installed.";
+    echo "Error starting.";
+    exit 2;
+  fi
+:ENDIF
+
+sleep 10
+echo "Check if tomcat is started ..."
+is_running=`is_tomcat_running`
+if [ -z "$is_running" ]; then
+  echo "Error starting tomcat."
+  exit 2
+else
+  echo "Start tomcat ok."
+  exit 0
+fi
+
+]]></process>
+      </row>
+      <row>
+         <pre_process>:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.PREPARE_JOB</pre_process>
+      </row>
+   </scripts>
+   <job_attributes>
+      <row>
+         <activation_at_runtime>1</activation_at_runtime>
+         <platform>UNIX</platform>
+         <agent><![CDATA[<UNIX>]]></agent>
+         <job_report_path>2</job_report_path>
+         <priority>0</priority>
+         <unix_shell></unix_shell>
+         <unix_shell_options></unix_shell_options>
+         <unix_type></unix_type>
+         <unix_cmd></unix_cmd>
+      </row>
+   </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
+</jobs>
