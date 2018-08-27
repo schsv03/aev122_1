@@ -18,6 +18,7 @@
          <type>JOBS</type>
          <inherit_output_filter>N</inherit_output_filter>
          <queue>CLIENT_QUEUE</queue>
+         <description>Gaga</description>
          <versioning_id>-1620562657</versioning_id>
       </row>
    </general_attributes>
@@ -33,7 +34,8 @@
    <job_attributes>
       <row>
          <platform>WINDOWS</platform>
-         <agent><![CDATA[<WIN>]]></agent>
+         <agent>WIN02</agent>
+         <login>LOGIN.WIN01</login>
          <job_report_path>2</job_report_path>
          <win_work_dir>c:\</win_work_dir>
          <win_typ>0</win_typ>
@@ -45,4 +47,8 @@
          <win_cmd></win_cmd>
       </row>
    </job_attributes>
+   <rollback_definitions>
+      <row>
+      </row>
+   </rollback_definitions>
 </jobs>
